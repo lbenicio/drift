@@ -45,10 +45,10 @@ const DownloadButtons = ({
 					<Button
 						aria-label="Download"
 						size="sm"
-						className="bg-transparent border-none"
+						className="border-none bg-transparent"
 						variant={"ghost"}
 					>
-						<Download className="w-4 h-4 " />
+						<Download className="h-4 w-4 " />
 						<span className="sr-only">Download</span>
 					</Button>
 				</Link>
@@ -58,11 +58,11 @@ const DownloadButtons = ({
 					<Link href={rawLink || ""} target="_blank" rel="noopener noreferrer">
 						<Button
 							aria-label="Open raw file in new tab"
-							className="bg-transparent border-none"
+							className="border-none bg-transparent"
 							size="sm"
 							variant={"ghost"}
 						>
-							<ExternalLink className="w-4 h-4" />
+							<ExternalLink className="h-4 w-4" />
 							<span className="sr-only">Open raw file in new tab</span>
 						</Button>
 					</Link>
@@ -73,11 +73,11 @@ const DownloadButtons = ({
 					<Link href={siteLink || ""} target="_blank" rel="noopener noreferrer">
 						<Button
 							aria-label="Open as webpage"
-							className="bg-transparent border-none"
+							className="border-none bg-transparent"
 							size="sm"
 							variant={"ghost"}
 						>
-							<Globe className="w-4 h-4" />
+							<Globe className="h-4 w-4" />
 							<span className="sr-only">Open as webpage</span>
 						</Button>
 					</Link>
@@ -147,7 +147,7 @@ const Document = ({ skeleton, ...props }: Props) => {
 			<Card className="border-gray-200 dark:border-gray-900">
 				<CardHeader
 					id={file?.title}
-					className="flex flex-row items-center justify-between py-1 bg-gray-200 dark:bg-gray-900"
+					className="flex flex-row items-center justify-between bg-gray-200 py-1 dark:bg-gray-900"
 				>
 					<Link
 						href={`#${file?.title}`}
@@ -168,7 +168,7 @@ const Document = ({ skeleton, ...props }: Props) => {
 						}
 					/>
 				</CardHeader>
-				<CardContent className="flex flex-col h-full pt-2">
+				<CardContent className="flex h-full flex-col pt-2">
 					<DocumentTabs
 						defaultTab={props.initialTab}
 						staticPreview={file?.html}

@@ -13,7 +13,7 @@ export default function Layout({
 }) {
 	return (
 		<div className={clsx(styles.page, forSites && styles.forSites)}>
-			<div className="flex flex-col justify-between h-screen">
+			<div className="flex h-screen flex-col justify-between">
 				<div> {children}</div>
 				<footer className="mx-auto h-4 max-w-[var(--main-content)] text-center text-sm text-gray-500">
 					<p>

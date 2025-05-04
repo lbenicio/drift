@@ -26,7 +26,7 @@ export function DatePicker({
 						!expiresAt && "text-muted-foreground"
 					)}
 				>
-					<CalendarIcon className="w-4 h-4 mr-2" />
+					<CalendarIcon className="mr-2 h-4 w-4" />
 					{expiresAt ? (
 						format(expiresAt, "PPP")
 					) : (

@@ -78,7 +78,7 @@ const ListItem = ({
 
 	return (
 		<FadeIn key={post.id} as="li">
-			<Card className="overflow-y-scroll h-42">
+			<Card className="h-42 overflow-y-scroll">
 				<CardHeader>
 					<CardTitle className="flex items-center justify-between gap-2">
 						<span className={styles.titleText}>
@@ -108,14 +108,14 @@ const ListItem = ({
 									<DropdownMenuTrigger asChild>
 										<MoreVertical className="cursor-pointer" />
 									</DropdownMenuTrigger>
-									<DropdownMenuContent className="mt-2 border rounded-md shadow-sm border-border bg-background">
+									<DropdownMenuContent className="mt-2 rounded-md border border-border bg-background shadow-sm">
 										<DropdownMenuItem
 											onSelect={() => {
 												editACopy()
 											}}
 											className="cursor-pointer bg-background"
 										>
-											<Edit className="w-4 h-4 mr-2" /> Edit a copy
+											<Edit className="mr-2 h-4 w-4" /> Edit a copy
 										</DropdownMenuItem>
 										{isOwner && (
 											<DropdownMenuItem
@@ -124,7 +124,7 @@ const ListItem = ({
 												}}
 												className="cursor-pointer bg-background"
 											>
-												<Trash className="w-4 h-4 mr-2" />
+												<Trash className="mr-2 h-4 w-4" />
 												Delete
 											</DropdownMenuItem>
 										)}
@@ -134,7 +134,7 @@ const ListItem = ({
 													viewParentClick()
 												}}
 											>
-												<ArrowUpCircle className="w-4 h-4 mr-2" />
+												<ArrowUpCircle className="mr-2 h-4 w-4" />
 												View parent
 											</DropdownMenuItem>
 										)}
