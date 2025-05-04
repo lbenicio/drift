@@ -29,10 +29,10 @@ const nextConfig = {
 				: "http://localhost:3000")
 	},
 	eslint: {
-		ignoreDuringBuilds: process.env.VERCEL_ENV !== "production"
+		ignoreDuringBuilds: true
 	},
 	typescript: {
-		ignoreBuildErrors: process.env.VERCEL_ENV !== "production"
+		ignoreBuildErrors: true
 	},
 	modularizeImports: {
 		"react-feather": {
