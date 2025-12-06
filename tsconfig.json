@@ -32,6 +32,7 @@
     "jsx": "react-jsx",
     "incremental": true,
     "moduleResolution": "bundler",
+    "allowArbitraryExtensions": true,
     "paths": {
       "@components/*": ["./src/app/components/*"],
       "@lib/*": ["./src/lib/*"],
