@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 const WIDTH = 1200;
 const HEIGHT = 630;
 function Logo() {
-  // from public/assets/logo.svg
+  // from public/assets/images/logo.svg
   return (
     <svg width="72" height="72" version="1.1" viewBox="0 0 19.05 19.05" xmlns="http://www.w3.org/2000/svg">
       <defs>

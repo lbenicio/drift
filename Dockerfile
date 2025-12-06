@@ -19,6 +19,9 @@ WORKDIR /app
 
 RUN corepack enable
 
+# Install node-prune for reducing node_modules size
+RUN wget -qO- https://gobinaries.com/tj/node-prune | sh
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/.yarn ./.yarn
 COPY . .
@@ -31,6 +34,9 @@ ENV SKIP_ENV_VALIDATION=true
 
 RUN yarn prisma generate
 RUN yarn build:pkg
+
+# Prune node_modules to reduce image size
+RUN node-prune
 
 FROM node:24-alpine AS runner
 

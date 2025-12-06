@@ -1,6 +1,6 @@
 # Drift
 
-![Drift Logo](src/public/assets/logo.png)
+![Drift Logo](public/assets/images/logo.svg)
 
 [![Tests](https://github.com/lbenicio/drift/actions/workflows/tests.yaml/badge.svg)](https://github.com/lbenicio/drift/actions/workflows/tests.yaml)
 [![Lint & Format](https://github.com/lbenicio/drift/actions/workflows/lint-format.yaml/badge.svg)](https://github.com/lbenicio/drift/actions/workflows/lint-format.yaml)

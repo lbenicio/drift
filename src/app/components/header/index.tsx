@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { cn } from "@lib/cn";
+import Link from "next/link";
 
-import { useSessionSWR } from "@lib/use-session-swr";
-import { PropsWithChildren, useSyncExternalStore } from "react";
-import { useSelectedLayoutSegments } from "next/navigation";
-import Image from "next/image";
-import { useTheme } from "next-themes";
-import { Moon, Sun } from "react-feather";
 import FadeIn from "@components/fade-in";
+import { useSessionSWR } from "@lib/use-session-swr";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import { useSelectedLayoutSegments } from "next/navigation";
+import { PropsWithChildren, useSyncExternalStore } from "react";
+import { Moon, Sun } from "react-feather";
 import MobileHeader from "./mobile";
 
 const emptySubscribe = () => () => {};
@@ -32,7 +32,7 @@ export default function Header() {
     <header className="mt-4 flex h-16 items-center justify-start md:justify-between">
       <span className="hidden items-center md:flex">
         <Link href="/" className="mr-4 flex items-center">
-          <Image src={"/assets/logo.svg"} width={32} height={32} alt="" priority />
+          <Image src={"/assets/images/logo.svg"} width={32} height={32} alt="" priority />
           <span className="bg-transparent pl-4 text-lg font-bold">Drift</span>
         </Link>
         <nav className="flex space-x-4 lg:space-x-6">
