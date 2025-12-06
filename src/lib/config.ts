@@ -64,10 +64,13 @@ export const config = (env: Environment): Config => {
   };
 
   const is_production = env.NODE_ENV === "production";
+  const skip_env_validation = stringToBoolean(env.SKIP_ENV_VALIDATION);
 
   validNodeEnvs(env.NODE_ENV);
 
-  throwIfUndefined("DATABASE_URL");
+  if (!skip_env_validation) {
+    throwIfUndefined("DATABASE_URL");
+  }
 
   const config: Config = {
     is_production,
@@ -84,7 +87,7 @@ export const config = (env: Environment): Config => {
     keycloak_client_secret: env.KEYCLOAK_SECRET ?? "",
     keycloak_issuer: env.KEYCLOAK_ISSUER ?? "",
     keycloak_name: env.KEYCLOAK_NAME ?? "",
-    nextauth_secret: throwIfUndefined("NEXTAUTH_SECRET"),
+    nextauth_secret: skip_env_validation ? (env.NEXTAUTH_SECRET ?? "") : throwIfUndefined("NEXTAUTH_SECRET"),
     credential_auth: stringToBoolean(env.CREDENTIAL_AUTH) ?? true,
   };
   return config;

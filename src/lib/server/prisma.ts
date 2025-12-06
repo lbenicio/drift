@@ -10,22 +10,26 @@ import * as crypto from "crypto";
 
 export type { User as ServerUser, File as ServerFile, Post as ServerPost } from "@prisma/client";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaPg(pool);
+// Skip database connection during build when SKIP_ENV_VALIDATION is set
+const skipDbConnection = process.env.SKIP_ENV_VALIDATION === "true" || process.env.SKIP_ENV_VALIDATION === "1";
 
-export const prisma =
-  global.prisma ||
-  new PrismaClient({
-    adapter,
-    log: ["query"],
-  });
+let prismaInstance: PrismaClient | undefined;
 
-// prisma.$use(async (params, next) => {
-// 	const result = await next(params)
-// 	return updateDates(result)
-// })
+if (!skipDbConnection && process.env.DATABASE_URL) {
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const adapter = new PrismaPg(pool);
 
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+  prismaInstance =
+    global.prisma ||
+    new PrismaClient({
+      adapter,
+      log: ["query"],
+    });
+
+  if (process.env.NODE_ENV !== "production") global.prisma = prismaInstance;
+}
+
+export const prisma = prismaInstance as PrismaClient;
 
 const postWithFiles = Prisma.validator<Prisma.PostDefaultArgs>()({
   include: {
@@ -213,6 +217,9 @@ export const getPostById = async (postId: ServerPost["id"], options?: GetPostByI
 };
 
 export const getAllPosts = async (options?: Prisma.PostFindManyArgs): Promise<ServerPost[] | ServerPostWithFiles[] | ServerPostWithFilesAndAuthor[]> => {
+  if (!prisma) {
+    return [];
+  }
   const posts = await prisma.post.findMany(options);
   return posts;
 };

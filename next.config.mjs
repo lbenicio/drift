@@ -1,6 +1,7 @@
 import bundleAnalyzer from "@next/bundle-analyzer";
 
 process.env.NEXTAUTH_URL = process.env.DRIFT_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+process.env.DRIFT_URL = process.env.NEXTAUTH_URL;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

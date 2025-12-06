@@ -29,6 +29,11 @@ export default async function FilePage({
 }
 
 export async function generateStaticParams() {
+  // Skip static generation when database is not available (during build)
+  if (process.env.SKIP_ENV_VALIDATION === "true" || process.env.SKIP_ENV_VALIDATION === "1") {
+    return [];
+  }
+
   const posts = (await getAllPosts({
     select: {
       id: true,

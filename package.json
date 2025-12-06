@@ -9,7 +9,7 @@
     "build:analyze": "cross-env ANALYZE=true next build",
     "fmt:lint": "prettier --list-different --config .prettierrc src --write && eslint src",
     "unused:find": "next-unused",
-    "db:prisma": "prisma",
+    "db:generate": "prisma generate --schema=src/prisma/schema.prisma",
     "test:unit": "jest",
     "deps:install": "yarn install && yarn prisma generate --schema=src/prisma/schema.prisma",
     "deps:update": "npm-check-updates -u && yarn install"
