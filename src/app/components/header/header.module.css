@@ -1,67 +1,67 @@
 .tabs {
-	justify-content: center;
-	display: flex;
-	margin: var(--gap) 0;
-	height: 40px;
+  justify-content: center;
+  display: flex;
+  margin: var(--gap) 0;
+  height: 40px;
 }
 
 .tabs .buttons {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tabs .buttons button {
-	border: none;
-	border-radius: 0;
-	cursor: pointer;
-	background: var(--bg);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background: var(--bg);
 }
 
 .tabs button,
 .tabs a {
-	color: var(--darker-gray);
-	transition: color 0.2s ease;
+  color: var(--darker-gray);
+  transition: color 0.2s ease;
 }
 
 .tabs .buttons a:hover,
 .tabs .buttons button:hover {
-	color: var(--fg);
+  color: var(--fg);
 }
 
 .wrapper {
-	display: flex;
-	align-items: center;
-	width: min-content;
+  display: flex;
+  align-items: center;
+  width: min-content;
 }
 
 .header {
-	transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .selectContent {
-	width: auto;
-	height: 18px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  width: auto;
+  height: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .contentWrapper {
-	background: var(--bg);
-	margin-left: var(--gap);
+  background: var(--bg);
+  margin-left: var(--gap);
 }
 
 @media only screen and (max-width: 768px) {
-	.header {
-		opacity: 1;
-	}
+  .header {
+    opacity: 1;
+  }
 
-	.wrapper [data-tab="github"] {
-		display: none;
-	}
+  .wrapper [data-tab="github"] {
+    display: none;
+  }
 
-	.tabs {
-		display: none;
-	}
+  .tabs {
+    display: none;
+  }
 }

@@ -1,16 +1,16 @@
 .actionWrapper {
-	position: relative;
-	z-index: 1;
+  position: relative;
+  z-index: 1;
 
-	.actions {
-		/* small screens, top: 0 */
-		@media (max-width: 767px) {
-			top: 0;
-		}
+  .actions {
+    /* small screens, top: 0 */
+    @media (max-width: 767px) {
+      top: 0;
+    }
 
-		@media (max-width: 768px) {
-			position: relative;
-			margin-left: 0 !important;
-		}
-	}
+    @media (max-width: 768px) {
+      position: relative;
+      margin-left: 0 !important;
+    }
+  }
 }

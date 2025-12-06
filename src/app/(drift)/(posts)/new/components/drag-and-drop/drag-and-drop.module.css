@@ -1,37 +1,37 @@
 .container {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .container ul {
-	margin: 0;
-	margin-top: var(--gap-double);
+  margin: 0;
+  margin-top: var(--gap-double);
 }
 
 .dropzone:focus {
-	border-color: var(--gray);
+  border-color: var(--gray);
 }
 
 .error {
-	color: red;
-	font-size: 0.8rem;
-	transition: border 0.14s ease-in-out;
-	border: 2px solid red;
-	border-radius: 2px;
-	padding: 20px;
+  color: red;
+  font-size: 0.8rem;
+  transition: border 0.14s ease-in-out;
+  border: 2px solid red;
+  border-radius: 2px;
+  padding: 20px;
 }
 
 .error ul {
-	margin: 0;
-	padding-left: var(--gap-double);
+  margin: 0;
+  padding-left: var(--gap-double);
 }
 
 .verb:after {
-	content: "click";
+  content: "click";
 }
 
 @media (hover: none) {
-	.verb:after {
-		content: "tap";
-	}
+  .verb:after {
+    content: "tap";
+  }
 }

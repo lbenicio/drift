@@ -1,42 +1,42 @@
 .root {
-	padding-bottom: 200px;
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-half);
+  padding-bottom: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-half);
 }
 
 .buttons {
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	gap: var(--gap);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--gap);
 }
 
 .buttons .rightButtons {
-	display: flex;
-	gap: var(--gap);
-	align-items: center;
+  display: flex;
+  gap: var(--gap);
+  align-items: center;
 }
 
 .description {
-	width: 100%;
+  width: 100%;
 }
 
 @media screen and (max-width: 650px) {
-	.buttons {
-		flex-direction: column;
-		margin: 0;
-		justify-content: space-between;
-		min-height: 95px;
-	}
+  .buttons {
+    flex-direction: column;
+    margin: 0;
+    justify-content: space-between;
+    min-height: 95px;
+  }
 
-	.buttons .rightButtons {
-		flex-direction: column;
-		align-items: flex-start;
-	}
+  .buttons .rightButtons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-	.buttons .rightButtons > * {
-		width: min(100%, 350px);
-	}
+  .buttons .rightButtons > * {
+    width: min(100%, 350px);
+  }
 }

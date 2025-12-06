@@ -1,22 +1,22 @@
 .markdownPreview {
-	padding: var(--gap-quarter);
-	font-size: 16px;
-	line-height: 1.75;
-	color: hsl(var(--foreground));
+  padding: var(--gap-quarter);
+  font-size: 16px;
+  line-height: 1.75;
+  color: hsl(var(--foreground));
 }
 
 .skeletonPreview {
-	padding: var(--gap-half);
-	font-size: 16px;
-	line-height: 1.75;
+  padding: var(--gap-half);
+  font-size: 16px;
+  line-height: 1.75;
 }
 .markdownPreview {
-	padding: var(--gap-quarter);
-	color: hsl(var(--foreground));
+  padding: var(--gap-quarter);
+  color: hsl(var(--foreground));
 }
 
 .skeletonPreview {
-	padding: var(--gap-half);
+  padding: var(--gap-half);
 }
 
 .markdownPreview h1,
@@ -25,33 +25,33 @@
 .markdownPreview h4,
 .markdownPreview h5,
 .markdownPreview h6 {
-	font-weight: 600;
+  font-weight: 600;
 }
 
 .markdownPreview h1 {
-	font-size: 1.775rem;
+  font-size: 1.775rem;
 }
 
 .markdownPreview h2 {
-	font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .markdownPreview h3 {
-	font-size: 1.25rem;
+  font-size: 1.25rem;
 }
 
 .markdownPreview h4 {
-	font-size: 1.125rem;
+  font-size: 1.125rem;
 }
 
 .markdownPreview h5 {
-	font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 .markdownPreview p {
-	margin-top: 1.25rem;
-	margin-bottom: 1.25rem;
-	/* 	
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  /* 	
 	&:not(:first-child) {
 		line-height: 1.75rem;
 		margin-top: 1.5rem;
@@ -59,14 +59,14 @@
 }
 
 .markdownPreview pre {
-	border-radius: 3px;
-	font-family: "Courier New", Courier, monospace;
-	font-size: 14px;
-	line-height: 1.42857143;
-	margin: 0;
-	padding: 10px;
-	white-space: pre-wrap;
-	word-wrap: break-word;
+  border-radius: 3px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 1.42857143;
+  margin: 0;
+  padding: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 /* Auto-linked headers */
@@ -76,7 +76,7 @@
 .markdownPreview h4 a,
 .markdownPreview h5 a,
 .markdownPreview h6 a {
-	color: inherit;
+  color: inherit;
 }
 
 /* Auto-linked headers */
@@ -86,67 +86,67 @@
 .markdownPreview h4 a:hover::after,
 .markdownPreview h5 a:hover::after,
 .markdownPreview h6 a:hover::after {
-	content: "#";
-	font-size: 0.7em;
-	margin-left: 0.25em;
-	font-weight: normal;
-	filter: opacity(0.5);
+  content: "#";
+  font-size: 0.7em;
+  margin-left: 0.25em;
+  font-weight: normal;
+  filter: opacity(0.5);
 }
 
 .markdownPreview ul {
-	margin-bottom: 1.5rem;
-	margin-left: 1.5rem;
-	list-style-type: disc;
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+  list-style-type: disc;
 }
 
 .markdownPreview ol {
-	margin-bottom: 1.5rem;
-	margin-left: 1.5rem;
-	list-style-type: decimal;
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+  list-style-type: decimal;
 }
 
 .markdownPreview ul li::before {
-	content: "";
+  content: "";
 }
 
 .markdownPreview code::before,
 .markdownPreview code::after {
-	content: "";
+  content: "";
 }
 
 .markdownPreview blockquote {
-	padding-left: 1.5rem;
-	font-style: italic;
-	border-left-width: 2px;
+  padding-left: 1.5rem;
+  font-style: italic;
+  border-left-width: 2px;
 }
 
 .markdownPreview blockquote p {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .markdownPreview table {
-	overflow-y: auto;
-	width: 100%;
+  overflow-y: auto;
+  width: 100%;
 }
 
 .markdownPreview table th {
-	font-weight: 600;
-	padding: 0;
-	margin: 0;
-	border-top-width: 1px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  border-top-width: 1px;
 }
 
 @media screen and (max-width: 800px) {
-	.markdownPreview h1 a::after,
-	.markdownPreview h2 a::after,
-	.markdownPreview h3 a::after,
-	.markdownPreview h4 a::after,
-	.markdownPreview h5 a::after,
-	.markdownPreview h6 a::after {
-		content: "#";
-		font-size: 0.7em;
-		margin-left: 0.25em;
-		font-weight: normal;
-		filter: opacity(0.5);
-	}
+  .markdownPreview h1 a::after,
+  .markdownPreview h2 a::after,
+  .markdownPreview h3 a::after,
+  .markdownPreview h4 a::after,
+  .markdownPreview h5 a::after,
+  .markdownPreview h6 a::after {
+    content: "#";
+    font-size: 0.7em;
+    margin-left: 0.25em;
+    font-weight: normal;
+    filter: opacity(0.5);
+  }
 }

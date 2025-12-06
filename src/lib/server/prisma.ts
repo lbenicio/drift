@@ -1,322 +1,330 @@
 declare global {
-	// eslint-disable-next-line no-var
-	var prisma: PrismaClient | undefined
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
 }
 
-import config from "@lib/config"
-import { Post as ServerPost, PrismaClient, User as ServerUser, Prisma, File as ServerFile } from "@prisma/client"
-import * as crypto from "crypto"
-export type { User as ServerUser, File as ServerFile, Post as ServerPost } from "@prisma/client"
+import config from "@lib/config";
+import { Post as ServerPost, PrismaClient, User as ServerUser, Prisma, File as ServerFile } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+import * as crypto from "crypto";
+
+export type { User as ServerUser, File as ServerFile, Post as ServerPost } from "@prisma/client";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+
 export const prisma =
-	global.prisma ||
-	new PrismaClient({
-		log: ["query"]
-	})
+  global.prisma ||
+  new PrismaClient({
+    adapter,
+    log: ["query"],
+  });
 
 // prisma.$use(async (params, next) => {
 // 	const result = await next(params)
 // 	return updateDates(result)
 // })
 
-if (process.env.NODE_ENV !== "production") global.prisma = prisma
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
 const postWithFiles = Prisma.validator<Prisma.PostArgs>()({
-	include: {
-		files: true
-	}
-})
+  include: {
+    files: true,
+  },
+});
 
 const postWithAuthor = Prisma.validator<Prisma.PostArgs>()({
-	include: {
-		author: true
-	}
-})
+  include: {
+    author: true,
+  },
+});
 
 const postWithFilesAndAuthor = Prisma.validator<Prisma.PostArgs>()({
-	include: {
-		files: true,
-		author: true
-	}
-})
+  include: {
+    files: true,
+    author: true,
+  },
+});
 
-export type ServerPostWithFiles = Prisma.PostGetPayload<typeof postWithFiles>
-export type ServerPostWithAuthor = Prisma.PostGetPayload<typeof postWithAuthor>
-export type ServerPostWithFilesAndAuthor = Prisma.PostGetPayload<typeof postWithFilesAndAuthor>
+export type ServerPostWithFiles = Prisma.PostGetPayload<typeof postWithFiles>;
+export type ServerPostWithAuthor = Prisma.PostGetPayload<typeof postWithAuthor>;
+export type ServerPostWithFilesAndAuthor = Prisma.PostGetPayload<typeof postWithFilesAndAuthor>;
 
 export type PostWithFiles = Omit<ServerPostWithFiles, "files" | "updatedAt" | "createdAt" | "deletedAt" | "expiresAt"> & {
-	files: (Omit<ServerPostWithFiles["files"][number], "content" | "html" | "updatedAt" | "createdAt" | "deletedAt"> & {
-		content: string
-		html: string
-		updatedAt?: string
-		createdAt: string
-		deletedAt?: string
-	})[]
-	updatedAt?: string
-	createdAt: string
-	deletedAt?: string
-	expiresAt?: string
-}
+  files: (Omit<ServerPostWithFiles["files"][number], "content" | "html" | "updatedAt" | "createdAt" | "deletedAt"> & {
+    content: string;
+    html: string;
+    updatedAt?: string;
+    createdAt: string;
+    deletedAt?: string;
+  })[];
+  updatedAt?: string;
+  createdAt: string;
+  deletedAt?: string;
+  expiresAt?: string;
+};
 
 export type PostWithFilesAndAuthor = Omit<ServerPostWithFilesAndAuthor, "files" | "updatedAt" | "createdAt" | "deletedAt" | "expiresAt" | "author"> & {
-	files: (Omit<ServerPostWithFilesAndAuthor["files"][number], "content" | "html" | "updatedAt" | "createdAt" | "deletedAt"> & {
-		content: string
-		html: string
-		updatedAt?: string
-		createdAt: string
-		deletedAt?: string
-	})[]
+  files: (Omit<ServerPostWithFilesAndAuthor["files"][number], "content" | "html" | "updatedAt" | "createdAt" | "deletedAt"> & {
+    content: string;
+    html: string;
+    updatedAt?: string;
+    createdAt: string;
+    deletedAt?: string;
+  })[];
 
-	author: Omit<ServerPostWithFilesAndAuthor["author"], "createdAt" | "updatedAt"> & {
-		createdAt: string
-		updatedAt: string
-	}
+  author: Omit<ServerPostWithFilesAndAuthor["author"], "createdAt" | "updatedAt"> & {
+    createdAt: string;
+    updatedAt: string;
+  };
 
-	updatedAt?: string
-	createdAt: string
-	deletedAt?: string
-	expiresAt?: string
-}
+  updatedAt?: string;
+  createdAt: string;
+  deletedAt?: string;
+  expiresAt?: string;
+};
 
 export function serverPostToClientPost(post: ServerPostWithFiles | ServerPostWithFilesAndAuthor): PostWithFilesAndAuthor | PostWithFiles {
-	let result: PostWithFiles | PostWithFilesAndAuthor = {
-		...post,
-		files: post.files?.map((file) => ({
-			...file,
-			content: file.content?.toString("utf-8"),
-			html: file.html?.toString("utf-8"),
-			updatedAt: file.updatedAt?.toISOString(),
-			createdAt: file.createdAt?.toISOString(),
-			deletedAt: file.deletedAt?.toISOString()
-		})),
-		updatedAt: post.updatedAt?.toISOString(),
-		createdAt: post.createdAt?.toISOString(),
-		deletedAt: post.deletedAt?.toISOString(),
-		expiresAt: post.expiresAt?.toISOString()
-	}
+  let result: PostWithFiles | PostWithFilesAndAuthor = {
+    ...post,
+    files: post.files?.map((file) => ({
+      ...file,
+      content: file.content?.toString("utf-8"),
+      html: file.html?.toString("utf-8"),
+      updatedAt: file.updatedAt?.toISOString(),
+      createdAt: file.createdAt?.toISOString(),
+      deletedAt: file.deletedAt?.toISOString(),
+    })),
+    updatedAt: post.updatedAt?.toISOString(),
+    createdAt: post.createdAt?.toISOString(),
+    deletedAt: post.deletedAt?.toISOString(),
+    expiresAt: post.expiresAt?.toISOString(),
+  };
 
-	if ("author" in post && post.author) {
-		result = {
-			...result,
-			author: {
-				...post.author,
-				createdAt: post.author.createdAt?.toISOString(),
-				updatedAt: post.author.updatedAt?.toISOString()
-			}
-		}
-	}
+  if ("author" in post && post.author) {
+    result = {
+      ...result,
+      author: {
+        ...post.author,
+        createdAt: post.author.createdAt?.toISOString(),
+        updatedAt: post.author.updatedAt?.toISOString(),
+      },
+    };
+  }
 
-	return result
+  return result;
 }
 
 export const getFilesForPost = async (postId: string) => {
-	const files = await prisma.file.findMany({
-		where: {
-			postId
-		}
-	})
+  const files = await prisma.file.findMany({
+    where: {
+      postId,
+    },
+  });
 
-	return files
-}
+  return files;
+};
 
 export async function getFilesByPost(postId: string) {
-	const files = await prisma.file.findMany({
-		where: {
-			postId
-		}
-	})
+  const files = await prisma.file.findMany({
+    where: {
+      postId,
+    },
+  });
 
-	return files
+  return files;
 }
 
-export async function getPostsByUser(userId: string): Promise<ServerPost[]>
-export async function getPostsByUser(userId: string, includeFiles: true): Promise<ServerPostWithFiles[]>
+export async function getPostsByUser(userId: string): Promise<ServerPost[]>;
+export async function getPostsByUser(userId: string, includeFiles: true): Promise<ServerPostWithFiles[]>;
 export async function getPostsByUser(userId: ServerUser["id"], withFiles?: boolean) {
-	const posts = await prisma.post.findMany({
-		where: {
-			authorId: userId
-		},
-		orderBy: {
-			createdAt: "desc"
-		},
-		select: {
-			id: true,
-			title: true,
-			createdAt: true,
-			updatedAt: true,
-			authorId: true,
-			expiresAt: true,
-			visibility: true,
-			...(withFiles && {
-				files: {
-					select: {
-						id: true,
-						title: true,
-						createdAt: true
-					}
-				}
-			})
-		}
-	})
+  const posts = await prisma.post.findMany({
+    where: {
+      authorId: userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      updatedAt: true,
+      authorId: true,
+      expiresAt: true,
+      visibility: true,
+      ...(withFiles && {
+        files: {
+          select: {
+            id: true,
+            title: true,
+            createdAt: true,
+          },
+        },
+      }),
+    },
+  });
 
-	return posts
+  return posts;
 }
 
 export const getUserById = async (userId: ServerUser["id"], selects?: Prisma.UserFindUniqueArgs["select"]) => {
-	const user = await prisma.user.findUnique({
-		where: {
-			id: userId
-		},
-		select: {
-			id: true,
-			email: true,
-			// displayName: true,
-			role: true,
-			displayName: true,
-			...selects
-		}
-	})
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      email: true,
+      // displayName: true,
+      role: true,
+      displayName: true,
+      ...selects,
+    },
+  });
 
-	return user
-}
+  return user;
+};
 
 export const isUserAdmin = async (userId: ServerUser["id"]) => {
-	const user = await prisma.user.findUnique({
-		where: {
-			id: userId
-		},
-		select: {
-			role: true
-		}
-	})
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      role: true,
+    },
+  });
 
-	return user?.role?.toLowerCase() === "admin"
-}
+  return user?.role?.toLowerCase() === "admin";
+};
 
 export const createUser = async (username: string, password: string, serverPassword?: string) => {
-	if (!username || !password) {
-		throw new Error("Missing param")
-	}
+  if (!username || !password) {
+    throw new Error("Missing param");
+  }
 
-	if (config.registration_password && serverPassword !== config.registration_password) {
-		throw new Error("Wrong registration password")
-	}
+  if (config.registration_password && serverPassword !== config.registration_password) {
+    throw new Error("Wrong registration password");
+  }
 
-	return {
-		// user,
-		// token
-	}
-}
+  return {
+    // user,
+    // token
+  };
+};
 
 // all of prisma.post.findUnique
-type GetPostByIdOptions = Pick<Prisma.PostFindUniqueArgs, "include" | "select">
+type GetPostByIdOptions = Pick<Prisma.PostFindUniqueArgs, "include" | "select">;
 
 export const getPostById = async (postId: ServerPost["id"], options?: GetPostByIdOptions) => {
-	const post = await prisma.post.findUnique({
-		where: {
-			id: postId
-		},
-		...options
-	})
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+    ...options,
+  });
 
-	return post
-}
+  return post;
+};
 
 export const getAllPosts = async (options?: Prisma.PostFindManyArgs): Promise<ServerPost[] | ServerPostWithFiles[] | ServerPostWithFilesAndAuthor[]> => {
-	const posts = await prisma.post.findMany(options)
-	return posts
-}
+  const posts = await prisma.post.findMany(options);
+  return posts;
+};
 
 export const userWithPosts = Prisma.validator<Prisma.UserArgs>()({
-	include: {
-		posts: true
-	}
-})
+  include: {
+    posts: true,
+  },
+});
 
-export type UserWithPosts = Prisma.UserGetPayload<typeof userWithPosts>
+export type UserWithPosts = Prisma.UserGetPayload<typeof userWithPosts>;
 
 export const getAllUsers = async (options?: Prisma.UserFindManyArgs): Promise<ServerUser[] | UserWithPosts[]> => {
-	const users = (await prisma.user.findMany({
-		select: {
-			id: true,
-			email: true,
-			role: true,
-			displayName: true,
-			posts: true,
-			createdAt: true
-		},
-		...options
-	})) as ServerUser[] | UserWithPosts[]
+  const users = (await prisma.user.findMany({
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      displayName: true,
+      posts: true,
+      createdAt: true,
+    },
+    ...options,
+  })) as ServerUser[] | UserWithPosts[];
 
-	return users
-}
+  return users;
+};
 
 export const searchPosts = async (
-	query: string,
-	{
-		userId
-	}: {
-		userId?: ServerUser["id"]
-	} = {}
+  query: string,
+  {
+    userId,
+  }: {
+    userId?: ServerUser["id"];
+  } = {},
 ): Promise<ServerPostWithFiles[]> => {
-	const posts = await prisma.post.findMany({
-		where: {
-			OR: [
-				{
-					title: {
-						contains: query
-					},
-					authorId: userId,
-					visibility: userId ? undefined : "public"
-				},
-				{
-					files: {
-						some: {
-							content: {
-								in: [Buffer.from(query)]
-							}
-						}
-					},
-					visibility: userId ? undefined : "public",
-					authorId: userId
-				}
-			]
-		}
-	})
+  const posts = await prisma.post.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: query,
+          },
+          authorId: userId,
+          visibility: userId ? undefined : "public",
+        },
+        {
+          files: {
+            some: {
+              content: {
+                in: [Buffer.from(query)],
+              },
+            },
+          },
+          visibility: userId ? undefined : "public",
+          authorId: userId,
+        },
+      ],
+    },
+  });
 
-	return posts as ServerPostWithFiles[]
-}
+  return posts as ServerPostWithFiles[];
+};
 
 function generateApiToken() {
-	return crypto.randomBytes(32).toString("hex")
+  return crypto.randomBytes(32).toString("hex");
 }
 
 export const createApiToken = async (userId: ServerUser["id"], name: string) => {
-	const apiToken = await prisma.apiToken.create({
-		data: {
-			token: generateApiToken(),
-			expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3),
-			user: {
-				connect: { id: userId }
-			},
-			name
-		}
-	})
+  const apiToken = await prisma.apiToken.create({
+    data: {
+      token: generateApiToken(),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3),
+      user: {
+        connect: { id: userId },
+      },
+      name,
+    },
+  });
 
-	return apiToken
-}
+  return apiToken;
+};
 
 export function getFileById(fileId: ServerFile["id"]) {
-	return prisma.file.findUnique({
-		where: {
-			id: fileId
-		},
-		include: {
-			post: {
-				select: {
-					id: true,
-					visibility: true
-				}
-			}
-		}
-	})
+  return prisma.file.findUnique({
+    where: {
+      id: fileId,
+    },
+    include: {
+      post: {
+        select: {
+          id: true,
+          visibility: true,
+        },
+      },
+    },
+  });
 }

@@ -1,16 +1,16 @@
 .title {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: inherit;
 
-	@media screen and (max-width: 650px) {
-		align-items: flex-start;
-		flex-direction: column;
-	}
+  @media screen and (max-width: 650px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 .labelAndInput {
-	font-size: 1.2rem;
+  font-size: 1.2rem;
 }

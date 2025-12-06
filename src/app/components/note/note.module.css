@@ -1,31 +1,31 @@
 .note {
-	color: var(--fg);
-	margin: 0;
-	padding: var(--gap);
-	border-radius: var(--radius);
+  color: var(--fg);
+  margin: 0;
+  padding: var(--gap);
+  border-radius: var(--radius);
 }
 
 .info {
-	background: var(--gray);
+  background: var(--gray);
 }
 
 .warning {
-	background: var(--warning);
-	color: var(--bg);
+  background: var(--warning);
+  color: var(--bg);
 }
 
 .error {
-	background: #f33;
+  background: #f33;
 }
 
 [data-theme="light"] .warning,
 [data-theme="light"] .error {
-	color: var(--fg);
+  color: var(--fg);
 }
 
 .type {
-	color: var(--fg);
-	margin-right: 0.5em;
-	font-size: initial;
-	text-transform: capitalize;
+  color: var(--fg);
+  margin-right: 0.5em;
+  font-size: initial;
+  text-transform: capitalize;
 }

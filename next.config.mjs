@@ -3,9 +3,6 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
-	experimental: {
-		appDir: true
-	},
 	rewrites() {
 		return [
 			{
@@ -19,17 +16,15 @@ const nextConfig = {
 		]
 	},
 	images: {
-		domains: ["avatars.githubusercontent.com"]
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "avatars.githubusercontent.com"
+			}
+		]
 	},
 	env: {
-		NEXT_PUBLIC_DRIFT_URL:
-			process.env.DRIFT_URL ||
-			(process.env.VERCEL_URL
-				? `https://${process.env.VERCEL_URL}`
-				: "http://localhost:3000")
-	},
-	eslint: {
-		ignoreDuringBuilds: true
+		NEXT_PUBLIC_DRIFT_URL: process.env.DRIFT_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
 	},
 	typescript: {
 		ignoreBuildErrors: true

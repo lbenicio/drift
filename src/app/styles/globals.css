@@ -1,138 +1,196 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../../**/*.{ts,tsx}";
+@plugin "@tailwindcss/typography";
+@variant dark (&:where(.dark, .dark *));
 
-@layer base {
-	:root {
-		/* Spacing */
-		--gap-quarter: 0.25rem;
-		--gap-half: 0.5rem;
-		--gap: 1rem;
-		--gap-double: 2rem;
+@theme {
+  /* Border Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 
-		--small-gap: 4rem;
-		--big-gap: 4rem;
-		--main-content: min(55rem, 100vw);
-		--radius: 8px;
-		--inline-radius: 5px;
+  /* Colors */
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
 
-		--gap-negative: calc(-1 * var(--gap));
-		--gap-half-negative: calc(-1 * var(--gap-half));
-		--gap-quarter-negative: calc(-1 * var(--gap-quarter));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
 
-		/* Typography */
-		--font-sans: var(--inter-font), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-		--font-mono: ui-monospace, "SFMono-Regular", "Consolas", "Liberation Mono", "Menlo", monospace;
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-		/* Transitions */
-		--transition: 0.1s ease-in-out;
-		--transition-slow: 0.3s ease-in-out;
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
 
-		--token: #999;
-		--comment: #999;
-		--keyword: #fff;
-		--name: #fff;
-		--highlight: #2e2e2e;
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
 
-		/* Dark Mode Colors */
-		--bg: #000;
-		--fg: #fafbfc;
-		--gray: #666;
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
 
-		--light-gray: #dedede;
-		--lighter-gray: #f2f2f2;
-		--lightest-gray: #fafafa;
-		--darker-gray: #555;
-		--darkest-gray: #222;
-		--article-color: #eaeaea;
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
 
-		--header-bg: rgba(19, 20, 21, 0.45);
-		--gray-alpha: rgba(19, 20, 21, 0.6);
-		--selection: rgba(255, 255, 255, 0.99);
-		--warning: #ff6700;
-		--link: #3291ff;
-		color-scheme: dark;
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
 
-		--background: 0 0% 100%;
-		--foreground: #fafbfc;
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
 
-		--muted: 210 40% 96.1%;
-		--muted-foreground: 215.4 16.3% 46.9%;
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
 
-		--popover: 0 0% 100%;
-		--popover-foreground: 222.2 47.4% 11.2%;
-
-		--card: 0 0% 100%;
-		--card-foreground: 222.2 47.4% 11.2%;
-
-		--border: 214.3 31.8% 91.4%;
-		--input: 214.3 31.8% 91.4%;
-
-		--primary: 222.2 47.4% 11.2%;
-		--primary-foreground: 210 40% 98%;
-
-		--secondary: 210 40% 96.1%;
-		--secondary-foreground: 222.2 47.4% 11.2%;
-
-		--accent: 210 40% 96.1%;
-		--accent-foreground: 222.2 47.4% 11.2%;
-
-		--destructive: 0 100% 50%;
-		--destructive-foreground: 210 40% 98%;
-
-		--ring: 215 20.2% 65.1%;
-
-		--radius: 0.5rem;
-	}
-
-	.dark {
-		--background: 224 71% 3%;
-		--foreground: 213 31% 88%;
-
-		--muted: 223 47% 11%;
-		--muted-foreground: 215.4 16.3% 56.9%;
-
-		--popover: 224 71% 4%;
-		--popover-foreground: 215 20.2% 65.1%;
-
-		--card: 224 71% 4%;
-		--card-foreground: 213 31% 88%;
-
-		--border: 216 34% 17%;
-		--input: 216 34% 17%;
-
-		--primary: 210 40% 98%;
-		--primary-foreground: 222.2 47.4% 1.2%;
-
-		--secondary: 222.2 47.4% 11.2%;
-		--secondary-foreground: 210 40% 98%;
-
-		--accent: 216 34% 17%;
-		--accent-foreground: 210 40% 98%;
-
-		--destructive: 0 63% 31%;
-		--destructive-foreground: 210 40% 98%;
-
-		--ring: 216 34% 17%;
-
-		--radius: 0.5rem;
-
-		--light-gray: #444;
-		--lighter-gray: #222;
-		--lightest-gray: #1a1a1a;
-		--darker-gray: #b4b4b4;
-		--darkest-gray: #efefef;
-	}
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
 @layer base {
-	* {
-		@apply border-border;
-	}
-	body {
-		@apply bg-background text-foreground;
-		font-feature-settings:
-			"rlig" 1,
-			"calt" 1;
-	}
+  :root {
+    /* Spacing */
+    --gap-quarter: 0.25rem;
+    --gap-half: 0.5rem;
+    --gap: 1rem;
+    --gap-double: 2rem;
+
+    --small-gap: 4rem;
+    --big-gap: 4rem;
+    --main-content: min(55rem, 100vw);
+    --radius: 8px;
+    --inline-radius: 5px;
+
+    --gap-negative: calc(-1 * var(--gap));
+    --gap-half-negative: calc(-1 * var(--gap-half));
+    --gap-quarter-negative: calc(-1 * var(--gap-quarter));
+
+    /* Typography */
+    --font-sans: var(--inter-font), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    --font-mono: ui-monospace, "SFMono-Regular", "Consolas", "Liberation Mono", "Menlo", monospace;
+
+    /* Transitions */
+    --transition: 0.1s ease-in-out;
+    --transition-slow: 0.3s ease-in-out;
+
+    --token: #999;
+    --comment: #999;
+    --keyword: #fff;
+    --name: #fff;
+    --highlight: #2e2e2e;
+
+    /* Dark Mode Colors */
+    --bg: #000;
+    --fg: #fafbfc;
+    --gray: #666;
+
+    --light-gray: #dedede;
+    --lighter-gray: #f2f2f2;
+    --lightest-gray: #fafafa;
+    --darker-gray: #555;
+    --darkest-gray: #222;
+    --article-color: #eaeaea;
+
+    --header-bg: rgba(19, 20, 21, 0.45);
+    --gray-alpha: rgba(19, 20, 21, 0.6);
+    --selection: rgba(255, 255, 255, 0.99);
+    --warning: #ff6700;
+    --link: #3291ff;
+    color-scheme: dark;
+
+    --background: 0 0% 100%;
+    --foreground: #fafbfc;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 3%;
+    --foreground: 213 31% 88%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 88%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+
+    --light-gray: #444;
+    --lighter-gray: #222;
+    --lightest-gray: #1a1a1a;
+    --darker-gray: #b4b4b4;
+    --darkest-gray: #efefef;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
 }

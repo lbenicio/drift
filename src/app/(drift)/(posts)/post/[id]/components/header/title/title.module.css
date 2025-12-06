@@ -1,37 +1,37 @@
 .title {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: var(--gap);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap);
 }
 
 .title .badges {
-	display: flex;
-	gap: var(--gap-half);
-	flex-wrap: wrap;
+  display: flex;
+  gap: var(--gap-half);
+  flex-wrap: wrap;
 }
 
 .titleWithDropdown {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media screen and (max-width: 768px) {
-	.title {
-		flex-direction: column;
-		gap: var(--gap-half);
-	}
+  .title {
+    flex-direction: column;
+    gap: var(--gap-half);
+  }
 
-	.title .badges {
-		align-items: center;
-		justify-content: center;
-	}
+  .title .badges {
+    align-items: center;
+    justify-content: center;
+  }
 
-	.buttons {
-		display: flex;
-		justify-content: center;
-	}
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
 }

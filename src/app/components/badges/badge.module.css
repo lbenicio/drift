@@ -1,46 +1,46 @@
 .container {
-	display: inline-block;
+  display: inline-block;
 }
 
 .badge {
-	display: inline-block;
-	padding: 0.25em 0.5em;
-	border-radius: var(--radius);
-	background-color: var(--light-gray);
-	font-size: 0.85em;
-	line-height: 1;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  border-radius: var(--radius);
+  background-color: var(--light-gray);
+  font-size: 0.85em;
+  line-height: 1;
 }
 
 .badgeText {
-	font-size: var(--font-size-1);
-	font-weight: var(--font-weight-bold);
-	line-height: 0.5;
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-bold);
+  line-height: 0.5;
 }
 
 .primary {
-	background-color: var(--fg);
-	color: var(--bg);
+  background-color: var(--fg);
+  color: var(--bg);
 }
 
 .primary::selection {
-	background-color: var(--bg);
-	color: var(--fg);
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 .secondary {
-	background-color: var(--light-gray);
+  background-color: var(--light-gray);
 }
 
 .warning {
-	background-color: var(--warning);
-	color: var(--fg);
+  background-color: var(--warning);
+  color: var(--fg);
 }
 
 [data-theme="light"] .error,
 [data-theme="light"] .warning {
-	color: var(--bg);
+  color: var(--bg);
 }
 
 .error {
-	background-color: red;
+  background-color: red;
 }

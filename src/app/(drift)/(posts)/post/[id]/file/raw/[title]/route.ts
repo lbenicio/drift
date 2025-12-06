@@ -1,60 +1,60 @@
-import { parseQueryParam } from "@lib/server/parse-query-param"
-import { notFound } from "next/navigation"
-import { NextResponse } from "next/server"
-import { prisma } from "src/lib/server/prisma"
+import { parseQueryParam } from "@lib/server/parse-query-param";
+import { notFound } from "next/navigation";
+import { NextResponse } from "next/server";
+import { prisma } from "src/lib/server/prisma";
 
 export async function GET(
-	req: Request,
-	{
-		params
-	}: {
-		params: {
-			fileId: string
-		}
-	}
+  req: Request,
+  {
+    params,
+  }: {
+    params: {
+      fileId: string;
+    };
+  },
 ) {
-	const id = params.fileId
-	const download = new URL(req.url).searchParams.get("download") === "true"
+  const id = params.fileId;
+  const download = new URL(req.url).searchParams.get("download") === "true";
 
-	if (!id) {
-		return notFound()
-	}
+  if (!id) {
+    return notFound();
+  }
 
-	const file = await prisma.file.findUnique({
-		where: {
-			id: parseQueryParam(id)
-		}
-	})
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseQueryParam(id),
+    },
+  });
 
-	if (!file) {
-		return notFound()
-	}
+  if (!file) {
+    return notFound();
+  }
 
-	const { title, content: contentBuffer } = file
-	const content = contentBuffer.toString("utf-8")
+  const { title, content: contentBuffer } = file;
+  const content = contentBuffer.toString("utf-8");
 
-	let headers: HeadersInit = {
-		"Content-Type": "text/plain; charset=utf-8",
-		"Cache-Control": "s-maxage=86400"
-	}
+  let headers: HeadersInit = {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Cache-Control": "s-maxage=86400",
+  };
 
-	if (download) {
-		headers = {
-			...headers,
-			"Content-Disposition": `attachment; filename="${title}"`
-		}
-	} else {
-		headers = {
-			...headers,
-			"Content-Disposition": `inline; filename="${title}"`
-		}
-	}
+  if (download) {
+    headers = {
+      ...headers,
+      "Content-Disposition": `attachment; filename="${title}"`,
+    };
+  } else {
+    headers = {
+      ...headers,
+      "Content-Disposition": `inline; filename="${title}"`,
+    };
+  }
 
-	// TODO: we need to return the raw content for this to work. not currently implemented in next.js
-	return NextResponse.json(
-		{ data: content },
-		{
-			headers
-		}
-	)
+  // TODO: we need to return the raw content for this to work. not currently implemented in next.js
+  return NextResponse.json(
+    { data: content },
+    {
+      headers,
+    },
+  );
 }

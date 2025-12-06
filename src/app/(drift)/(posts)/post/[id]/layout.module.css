@@ -2,21 +2,21 @@
 }
 
 @media screen and (max-width: 900px) {
-	.header {
-		flex-direction: column;
-		gap: var(--gap);
-		margin-bottom: var(--gap);
-	}
+  .header {
+    flex-direction: column;
+    gap: var(--gap);
+    margin-bottom: var(--gap);
+  }
 }
 
 .controls {
-	height: 40px;
-	display: flex;
-	justify-content: flex-end;
+  height: 40px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media screen and (max-width: 768px) {
-	.controls {
-		justify-content: center;
-	}
+  .controls {
+    justify-content: center;
+  }
 }

@@ -1,11 +1,11 @@
 export interface GistFile {
-	filename: string
-	content: () => Promise<string>
+  filename: string;
+  content: () => Promise<string>;
 }
 
 export interface Gist {
-	id: string
-	created_at: Date
-	description: string
-	files: GistFile[]
+  id: string;
+  created_at: Date;
+  description: string;
+  files: GistFile[];
 }

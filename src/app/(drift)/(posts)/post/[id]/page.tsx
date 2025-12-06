@@ -1,50 +1,50 @@
-import VisibilityControl from "@components/badges/visibility-control"
-import { getMetadata } from "src/app/lib/metadata"
-import { PostWithFilesAndAuthor, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma"
-import PostFiles from "./components/post-files"
-import { getPost } from "./get-post"
+import VisibilityControl from "@components/badges/visibility-control";
+import { getMetadata } from "@app-lib/metadata";
+import { PostWithFilesAndAuthor, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma";
+import PostFiles from "./components/post-files";
+import { getPost } from "./get-post";
 
 export default async function PostPage({
-	params
+  params,
 }: {
-	params: {
-		id: string
-	}
+  params: {
+    id: string;
+  };
 }) {
-	const post = (await getPost(params.id)) as ServerPostWithFilesAndAuthor
-	const clientPost = serverPostToClientPost(post) as PostWithFilesAndAuthor
+  const post = (await getPost(params.id)) as ServerPostWithFilesAndAuthor;
+  const clientPost = serverPostToClientPost(post) as PostWithFilesAndAuthor;
 
-	return (
-		<>
-			<PostFiles post={clientPost} />
-			<div className="mx-auto mt-4 mb-4">
-				<VisibilityControl authorId={post.authorId} postId={post.id} visibility={post.visibility} />
-			</div>
-		</>
-	)
+  return (
+    <>
+      <PostFiles post={clientPost} />
+      <div className="mx-auto mt-4 mb-4">
+        <VisibilityControl authorId={post.authorId} postId={post.id} visibility={post.visibility} />
+      </div>
+    </>
+  );
 }
 
 export const generateMetadata = async ({
-	params
+  params,
 }: {
-	params: {
-		id: string
-	}
+  params: {
+    id: string;
+  };
 }) => {
-	const post = (await getPost(params.id)) as ServerPostWithFilesAndAuthor
+  const post = (await getPost(params.id)) as ServerPostWithFilesAndAuthor;
 
-	return getMetadata({
-		title: post.title,
-		description: post.description || undefined,
-		hidden: post.visibility === "public",
-		overrides: {
-			openGraph: {
-				title: post.title,
-				description: post.description || undefined,
-				type: "website",
-				siteName: "Drift"
-				// TODO: og images
-			}
-		}
-	})
-}
+  return getMetadata({
+    title: post.title,
+    description: post.description || undefined,
+    hidden: post.visibility === "public",
+    overrides: {
+      openGraph: {
+        title: post.title,
+        description: post.description || undefined,
+        type: "website",
+        siteName: "Drift",
+        // TODO: og images
+      },
+    },
+  });
+};

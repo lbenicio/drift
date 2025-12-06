@@ -1,5 +1,5 @@
-import HomePage from "../page"
+import HomePage from "@app/(drift)/page";
 
-export default HomePage
+export default HomePage;
 
-export const revalidate = 300
+export const revalidate = 300;

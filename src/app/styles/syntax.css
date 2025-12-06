@@ -2,23 +2,23 @@
 .token.punctuation,
 .token.builtin,
 .token.variable {
-	color: var(--token);
+  color: var(--token);
 }
 
 .token.keyword,
 .token.string,
 .token.number,
 .token.boolean {
-	color: var(--darker-gray);
+  color: var(--darker-gray);
 }
 
 .token.comment {
-	color: var(--comment);
+  color: var(--comment);
 }
 
 .token.class-name,
 .token.function,
 .token.tag,
 .token.attr-name {
-	color: var(--name);
+  color: var(--name);
 }

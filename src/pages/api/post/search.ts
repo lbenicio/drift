@@ -1,36 +1,36 @@
-import { withMethods } from "@lib/api-middleware/with-methods"
-import { parseQueryParam } from "@lib/server/parse-query-param"
-import { searchPosts } from "@lib/server/prisma"
-import { verifyApiUser } from "@lib/server/verify-api-user"
-import { NextApiRequest, NextApiResponse } from "next"
+import { withMethods } from "@lib/api-middleware/with-methods";
+import { parseQueryParam } from "@lib/server/parse-query-param";
+import { searchPosts } from "@lib/server/prisma";
+import { verifyApiUser } from "@lib/server/verify-api-user";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	const query = req.query
-	const q = parseQueryParam(query.q)
-	const publicSearch = parseQueryParam(query.public)
-	const searchQuery = parseQueryParam(q)
+  const query = req.query;
+  const q = parseQueryParam(query.q);
+  const publicSearch = parseQueryParam(query.public);
+  const searchQuery = parseQueryParam(q);
 
-	if (!searchQuery) {
-		res.status(400).json({ error: "Invalid query" })
-		return
-	}
+  if (!searchQuery) {
+    res.status(400).json({ error: "Invalid query" });
+    return;
+  }
 
-	if (publicSearch) {
-		const posts = await searchPosts(searchQuery)
-		return res.json(posts)
-	} else {
-		const userId = await verifyApiUser(req, res)
-		if (!userId) {
-			res.status(401).json({ error: "Unauthorized" })
-			return
-		}
+  if (publicSearch) {
+    const posts = await searchPosts(searchQuery);
+    return res.json(posts);
+  } else {
+    const userId = await verifyApiUser(req, res);
+    if (!userId) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
 
-		const posts = await searchPosts(searchQuery, {
-			userId
-		})
+    const posts = await searchPosts(searchQuery, {
+      userId,
+    });
 
-		return res.json(posts)
-	}
-}
+    return res.json(posts);
+  }
+};
 
-export default withMethods(["GET"], handler)
+export default withMethods(["GET"], handler);

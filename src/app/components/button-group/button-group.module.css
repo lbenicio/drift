@@ -1,46 +1,46 @@
 .button-group {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	margin-top: 0 !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  margin-top: 0 !important;
 }
 
 .button-group > * {
-	flex: 1 1 auto;
-	margin: 0;
+  flex: 1 1 auto;
+  margin: 0;
 }
 
 .button-group > * {
-	border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
 .button-group button:first-of-type {
-	border-top-left-radius: var(--radius) !important;
-	border-bottom-left-radius: var(--radius) !important;
+  border-top-left-radius: var(--radius) !important;
+  border-bottom-left-radius: var(--radius) !important;
 }
 
 .button-group button:last-of-type {
-	border-top-right-radius: var(--radius) !important;
-	border-bottom-right-radius: var(--radius) !important;
+  border-top-right-radius: var(--radius) !important;
+  border-bottom-right-radius: var(--radius) !important;
 }
 
 @media screen and (max-width: 768px) {
-	.verticalIfMobile {
-		flex-direction: column !important;
-	}
+  .verticalIfMobile {
+    flex-direction: column !important;
+  }
 
-	.verticalIfMobile.button-group button:first-of-type {
-		border-top-left-radius: var(--radius) !important;
-		border-top-right-radius: var(--radius) !important;
-		border-bottom-left-radius: 0 !important;
-		border-bottom-right-radius: 0 !important;
-	}
+  .verticalIfMobile.button-group button:first-of-type {
+    border-top-left-radius: var(--radius) !important;
+    border-top-right-radius: var(--radius) !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
 
-	.verticalIfMobile.button-group button:last-of-type {
-		border-top-left-radius: 0 !important;
-		border-top-right-radius: 0 !important;
-		border-bottom-left-radius: var(--radius) !important;
-		border-bottom-right-radius: var(--radius) !important;
-	}
+  .verticalIfMobile.button-group button:last-of-type {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: var(--radius) !important;
+    border-bottom-right-radius: var(--radius) !important;
+  }
 }

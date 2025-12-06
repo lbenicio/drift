@@ -1,15 +1,15 @@
-import styles from "./button-group.module.css"
-import clsx from "clsx"
+import styles from "./button-group.module.css";
+import clsx from "clsx";
 export default function ButtonGroup({
-	children,
-	verticalIfMobile,
-	...props
+  children,
+  verticalIfMobile,
+  ...props
 }: {
-	verticalIfMobile?: boolean
+  verticalIfMobile?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) {
-	return (
-		<div className={clsx(styles["button-group"], verticalIfMobile && styles.verticalIfMobile, props.className)} {...props}>
-			{children}
-		</div>
-	)
+  return (
+    <div className={clsx(styles["button-group"], verticalIfMobile && styles.verticalIfMobile, props.className)} {...props}>
+      {children}
+    </div>
+  );
 }

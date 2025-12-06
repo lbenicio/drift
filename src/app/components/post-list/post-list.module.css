@@ -1,40 +1,40 @@
 .container {
-	ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		margin-top: 0.5rem;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 0.5rem;
 
-		@media (max-width: 768px) {
-			padding: 0 var(--gap);
-		}
-	}
+    @media (max-width: 768px) {
+      padding: 0 var(--gap);
+    }
+  }
 
-	ul li {
-		padding: 0.5rem 0;
-	}
+  ul li {
+    padding: 0.5rem 0;
+  }
 
-	> * {
-		width: 100%;
-	}
+  > * {
+    width: 100%;
+  }
 }
 
 .postHeader {
-	display: flex;
-	justify-content: space-between;
-	padding: var(--gap);
-	align-items: center;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-	background: inherit;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--gap);
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: inherit;
 }
 
 .searchContainer {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	justify-content: center;
-	gap: var(--gap-half);
-	margin-bottom: var(--gap);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap-half);
+  margin-bottom: var(--gap);
 }

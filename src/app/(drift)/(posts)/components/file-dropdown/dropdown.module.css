@@ -1,38 +1,38 @@
 .wrapper {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .dropdownButton {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
 }
 
 .contentWrapper {
-	z-index: 1000;
+  z-index: 1000;
 }
 
 .content {
-	list-style: none;
-	width: 100%;
-	padding: var(--gap-quarter) var(--gap);
-	margin: 0;
+  list-style: none;
+  width: 100%;
+  padding: var(--gap-quarter) var(--gap);
+  margin: 0;
 }
 
 .content li::before {
-	content: "";
-	padding: 0;
-	margin: 0;
+  content: "";
+  padding: 0;
+  margin: 0;
 }
 
 .chevron {
-	transition: transform 0.1s ease-in-out;
+  transition: transform 0.1s ease-in-out;
 }
 
 [data-state="open"] .chevron {
-	transform: rotate(180deg);
+  transform: rotate(180deg);
 }
