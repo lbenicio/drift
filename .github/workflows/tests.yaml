@@ -27,44 +27,9 @@ env:
   NEXTAUTH_URL: http://localhost:3000
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Run ESLint
-        run: yarn eslint src --max-warnings 0
-
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: drift_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
 
@@ -82,16 +47,13 @@ jobs:
       - name: Generate Prisma Client
         run: yarn prisma generate
 
-      - name: Run database migrations
-        run: yarn prisma migrate deploy
-
       - name: Run unit tests
         run: yarn test:unit
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [test]
     steps:
       - uses: actions/checkout@v4
 
@@ -140,7 +102,7 @@ jobs:
   summary:
     name: Summary
     runs-on: ubuntu-latest
-    needs: [lint, test, build, typecheck]
+    needs: [test, build, typecheck]
     if: always()
     steps:
       - name: Generate Summary
@@ -157,12 +119,10 @@ jobs:
           }
 
           # Get statuses
-          LINT_STATUS="${{ needs.lint.result }}"
           TEST_STATUS="${{ needs.test.result }}"
           BUILD_STATUS="${{ needs.build.result }}"
           TYPECHECK_STATUS="${{ needs.typecheck.result }}"
 
-          LINT_EMOJI=$(get_status "$LINT_STATUS")
           TEST_EMOJI=$(get_status "$TEST_STATUS")
           BUILD_EMOJI=$(get_status "$BUILD_STATUS")
           TYPECHECK_EMOJI=$(get_status "$TYPECHECK_STATUS")
@@ -170,7 +130,7 @@ jobs:
           # Count results
           SUCCESS_COUNT=0
           FAIL_COUNT=0
-          for status in "$LINT_STATUS" "$TEST_STATUS" "$BUILD_STATUS" "$TYPECHECK_STATUS"; do
+          for status in "$TEST_STATUS" "$BUILD_STATUS" "$TYPECHECK_STATUS"; do
             if [[ "$status" == "success" ]]; then
               ((SUCCESS_COUNT++))
             elif [[ "$status" == "failure" ]]; then
@@ -179,7 +139,7 @@ jobs:
           done
 
           # Determine overall status
-          if [[ $FAIL_COUNT -eq 0 && $SUCCESS_COUNT -eq 4 ]]; then
+          if [[ $FAIL_COUNT -eq 0 && $SUCCESS_COUNT -eq 3 ]]; then
             OVERALL="✅ All Checks Passed"
             OVERALL_EMOJI="🎉"
           elif [[ $FAIL_COUNT -gt 0 ]]; then
@@ -198,7 +158,6 @@ jobs:
 
           | Job | Status | Result | Description |
           |-----|--------|--------|-------------|
-          | 🔍 Lint | $LINT_EMOJI | \`$LINT_STATUS\` | ESLint code quality checks |
           | 🧪 Test | $TEST_EMOJI | \`$TEST_STATUS\` | Unit tests with Jest |
           | 🏗️ Build | $BUILD_EMOJI | \`$BUILD_STATUS\` | Next.js production build |
           | 📝 TypeCheck | $TYPECHECK_EMOJI | \`$TYPECHECK_STATUS\` | TypeScript type validation |
@@ -211,7 +170,7 @@ jobs:
           |--------|-------|
           | ✅ Passed | $SUCCESS_COUNT |
           | ❌ Failed | $FAIL_COUNT |
-          | 📊 Total | 4 |
+          | 📊 Total | 3 |
 
           ---
 
@@ -235,7 +194,6 @@ jobs:
           | Tool | Version |
           |------|---------|
           | 📦 Node.js | 24.x |
-          | 🐘 PostgreSQL | 17 |
           | 📚 Package Manager | Yarn |
 
           ---
@@ -244,7 +202,7 @@ jobs:
           EOF
 
       - name: Check for failures
-        if: needs.lint.result == 'failure' || needs.test.result == 'failure' || needs.build.result == 'failure' || needs.typecheck.result == 'failure'
+        if: needs.test.result == 'failure' || needs.build.result == 'failure' || needs.typecheck.result == 'failure'
         run: |
           echo "❌ One or more CI checks failed!"
           exit 1

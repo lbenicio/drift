@@ -2,16 +2,6 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Release version (e.g., 1.0.0)"
-        required: true
-        type: string
-      prerelease:
-        description: "Mark as pre-release"
-        required: false
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -25,14 +15,29 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Extract version from package.json
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          # Check if it's a prerelease (contains hyphen like -beta, -rc, -alpha)
+          if [[ "$VERSION" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "📦 Version from package.json: $VERSION"
+
       - name: Validate version format
         id: validate
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ steps.version.outputs.version }}"
           if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
             echo "❌ Invalid version format: $VERSION"
             echo "Version must follow semantic versioning (e.g., 1.0.0, 1.0.0-beta.1)"
-            
+
             # Generate failure summary
             cat >> $GITHUB_STEP_SUMMARY << EOF
           # ❌ Release Failed: Invalid Version Format
@@ -66,12 +71,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ steps.version.outputs.version }}"
 
           # Check if tag exists
           if git rev-parse "v$VERSION" >/dev/null 2>&1; then
             echo "❌ Tag v$VERSION already exists!"
-            
+
             cat >> $GITHUB_STEP_SUMMARY << EOF
           # ❌ Release Failed: Tag Already Exists
 
@@ -103,7 +108,7 @@ jobs:
           # Check if release exists
           if gh release view "v$VERSION" >/dev/null 2>&1; then
             echo "❌ Release v$VERSION already exists!"
-            
+
             cat >> $GITHUB_STEP_SUMMARY << EOF
           # ❌ Release Failed: Release Already Exists
 
@@ -133,12 +138,12 @@ jobs:
       - name: Extract changelog for version
         id: changelog
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ steps.version.outputs.version }}"
           CHANGELOG_FILE="CHANGELOG.md"
 
           if [[ ! -f "$CHANGELOG_FILE" ]]; then
             echo "❌ CHANGELOG.md not found!"
-            
+
             cat >> $GITHUB_STEP_SUMMARY << EOF
           # ❌ Release Failed: CHANGELOG.md Not Found
 
@@ -194,7 +199,7 @@ jobs:
 
           if [[ -z "$CONTENT" ]]; then
             echo "❌ No changelog entry found for version $VERSION"
-            
+
             cat >> $GITHUB_STEP_SUMMARY << EOF
           # ❌ Release Failed: Missing Changelog Entry
 
@@ -275,30 +280,9 @@ jobs:
         env:
           SKIP_ENV_VALIDATION: true
 
-      - name: Update package.json version
-        run: |
-          VERSION="${{ github.event.inputs.version }}"
-          npm version "$VERSION" --no-git-tag-version --allow-same-version
-          echo "✅ Updated package.json to version $VERSION"
-
-      - name: Commit version bump
-        run: |
-          VERSION="${{ github.event.inputs.version }}"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Check if there are changes to commit
-          if git diff --quiet package.json; then
-            echo "No version change needed in package.json"
-          else
-            git add package.json
-            git commit -m "chore: bump version to $VERSION"
-            git push
-          fi
-
       - name: Create Git tag
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ steps.version.outputs.version }}"
           git tag -a "v$VERSION" -m "Release v$VERSION"
           git push origin "v$VERSION"
           echo "✅ Created and pushed tag v$VERSION"
@@ -307,8 +291,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${{ github.event.inputs.version }}"
-          PRERELEASE="${{ github.event.inputs.prerelease }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          PRERELEASE="${{ steps.version.outputs.prerelease }}"
 
           RELEASE_FLAGS=""
           if [[ "$PRERELEASE" == "true" ]]; then
@@ -327,9 +311,9 @@ jobs:
       - name: Generate Release Summary
         if: always()
         run: |
-          VERSION="${{ github.event.inputs.version }}"
-          PRERELEASE="${{ github.event.inputs.prerelease }}"
-          
+          VERSION="${{ steps.version.outputs.version }}"
+          PRERELEASE="${{ steps.version.outputs.prerelease }}"
+
           if [[ "$PRERELEASE" == "true" ]]; then
             RELEASE_TYPE="🚧 Pre-release"
             RELEASE_BADGE="⚠️"

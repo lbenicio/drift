@@ -1,29 +1,38 @@
-FROM node:17-alpine AS deps
+FROM node:24-alpine AS deps
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+# Enable corepack for Yarn 4
+RUN corepack enable
 
-RUN yarn install --frozen-lockfile
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
 
-FROM node:17-alpine AS builder
+RUN yarn install --immutable
+
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
+RUN corepack enable
+
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/.yarn ./.yarn
 COPY . .
 
 ARG API_URL
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV API_URL=${API_URL:-http://localhost:3000}
+ENV SKIP_ENV_VALIDATION=true
 
-RUN yarn build
+RUN yarn prisma generate
+RUN yarn build:pkg
 
-FROM node:17-alpine AS runner
+FROM node:24-alpine AS runner
 
 WORKDIR /app
 

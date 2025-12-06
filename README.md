@@ -1,147 +1,288 @@
-# <img src="src/public/assets/logo.png" height="32px" alt="" /> Drift
+# Drift
 
-> **Note:** This branch is where all work is being done to refactor to the Next.js 13 app directory and React Server Components.
+![Drift Logo](src/public/assets/logo.png)
 
-Drift is a self-hostable Gist clone. It's in beta, but is completely functional.
+[![Tests](https://github.com/lbenicio/drift/actions/workflows/tests.yaml/badge.svg)](https://github.com/lbenicio/drift/actions/workflows/tests.yaml)
+[![Lint & Format](https://github.com/lbenicio/drift/actions/workflows/lint-format.yaml/badge.svg)](https://github.com/lbenicio/drift/actions/workflows/lint-format.yaml)
+[![Docker](https://github.com/lbenicio/drift/actions/workflows/docker.yaml/badge.svg)](https://github.com/lbenicio/drift/actions/workflows/docker.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-You can try a demo at https://drift.lol. The demo is built on main but has no database, so files and accounts can be wiped at any time.
+Drift is a self-hostable Gist clone. Share code snippets, markdown documents, and text files with syntax highlighting and more.
 
-If you want to contribute, need support, or want to stay updated, you can join the IRC channel at #drift on irc.libera.chat or [reach me on twitter](https://twitter.com/Max_Leiter). If you don't have an IRC client yet, you can use a webclient [here](https://demo.thelounge.chat/#/connect?join=%23drift&nick=drift-user&realname=Drift%20User).
+## ✨ Features
 
-Drift is built with Next.js 13, React Server Components, [shadcn/ui](https://github.com/shadcn/ui), and [Prisma](https://prisma.io/).
+- 📝 Create and share code snippets with syntax highlighting
+- 🔒 Private, public, unlisted, and password-protected posts
+- ⏰ Expiring posts with automatic cleanup
+- 🎨 Markdown rendering with GitHub Flavored Markdown
+- 👤 User authentication (credentials + GitHub OAuth + Keycloak)
+- 🔍 Search through your posts
+- 📱 Responsive design
+- 🌙 Dark mode support
+- 🛡️ Admin panel for user management
+- 🐳 Docker support with multi-architecture builds
 
-<hr />
+## 🛠️ Tech Stack
 
-**Contents:**
+- **Framework:** [Next.js 16](https://nextjs.org/) with App Router & React Server Components
+- **Database:** PostgreSQL with [Prisma 7](https://prisma.io/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **Auth:** [NextAuth.js](https://next-auth.js.org/)
+- **Runtime:** Node.js 24
+- **Package Manager:** Yarn 4
 
-- [Setup](#setup)
-  - [Development](#development)
-  - [Production](#production)
-- [Environment variables](#environment-variables)
-- [Running with pm2](#running-with-pm2)
-- [Running with Docker](#running-with-docker)
-- [Current status](#current-status)
+## 📋 Table of Contents
 
-## Setup
+- [Quick Start](#-quick-start)
+- [Development](#-development)
+- [Production](#-production)
+- [Docker](#-docker)
+- [Environment Variables](#%EF%B8%8F-environment-variables)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-### Development
+## 🚀 Quick Start
 
-In the root directory, run `pnpm i`. If you need `pnpm`, you can download it [here](https://pnpm.io/installation).
-You can run `pnpm dev` in `client` for file watching and live reloading.
+### Prerequisites
 
-To work with [prisma](prisma.io/), you can use `pnpm prisma` or `pnpm exec prisma` to interact with the database.
+- Node.js 24+
+- PostgreSQL 16+
+- Yarn 4 (enabled via corepack)
 
-### Production
+### Installation
 
-`pnpm build` will produce production code. `pnpm start` will start the Next.js server.
+```bash
+# Clone the repository
+git clone https://github.com/lbenicio/drift.git
+cd drift
 
-### Environment Variables
+# Enable corepack for Yarn 4
+corepack enable
 
-You can change these to your liking.
+# Install dependencies
+yarn install
 
-`.env`:
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your configuration
 
-- `DRIFT_URL`: the URL of the drift instance.
-- `DATABASE_URL`: the URL to connect to your postgres instance. For example, `postgresql://user:password@localhost:5432/drift`.
-- `WELCOME_CONTENT`: a markdown string that's rendered on the home page
-- `WELCOME_TITLE`: the file title for the post on the homepage.
-- `ENABLE_ADMIN`: the first account created is an administrator account
-- `REGISTRATION_PASSWORD`: the password required to register an account. If not set, no password is required.
-- `NODE_ENV`: defaults to development, can be `production`
+# Generate Prisma client
+yarn prisma generate
 
-#### Auth environment variables
+# Run database migrations
+yarn prisma migrate deploy
 
-**Note:** Only credential auth currently supports the registration password, so if you want to secure registration, you must use only credential auth.
+# Start development server
+yarn start:dev
+```
 
-- `GITHUB_CLIENT_ID`: the client ID for GitHub OAuth.
-- `GITHUB_CLIENT_SECRET`: the client secret for GitHub OAuth.
-- `NEXTAUTH_URL`: the URL of the drift instance. Not required if hosting on Vercel.
-- `CREDENTIAL_AUTH`: whether to allow username/password authentication. Defaults to `true`.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-## Running with pm2
+## 💻 Development
 
-It's easy to start Drift using [pm2](https://pm2.keymetrics.io/).
-First, add the `.env` file with your values (see the above section for the required options).
+```bash
+# Start development server with hot reload
+yarn start:dev
 
-Then, use the following command to start the server:
+# Run linting
+yarn eslint src
 
-- `pnpm build && pm2 start pnpm --name drift --interpreter bash -- start`
+# Run formatting
+yarn fmt:lint
 
-Refer to pm2's docs or `pm2 help` for more information.
+# Run unit tests
+yarn test:unit
 
-## Running with Docker
+# Type checking
+yarn tsc --noEmit
 
-## Running with systemd
+# Generate Prisma client after schema changes
+yarn prisma generate
 
-_**NOTE:** We assume that you know how to enable user lingering if you don't want to use the systemd unit as root_
+# Create a new migration
+yarn prisma migrate dev
 
-- As root
-  - Place the following systemd unit in ___/etc/systemd/system___ and name it _drift.service_
-  - Replace any occurrence of ___`$USERNAME`___ with the shell username of the user that will be running the Drift server
+# Open Prisma Studio (database GUI)
+yarn prisma studio
+```
 
-  ```
-  ##########
-  # Drift Systemd Unit (Global)
-  ##########
-  [Unit]
-  Description=Drift Server (Global)
-  After=default.target
-  
-  [Service]
-  User=$USERNAME
-  Group=$USERNAME
-  Type=simple
-  WorkingDirectory=/home/$USERNAME/Drift
-  ExecStart=/usr/bin/pnpm start
-  Restart=on-failure
-  
-  [Install]
-  WantedBy=default.target
-  ```
-- As a nomal user
-  - Place the following systemd unit inside ___/home/user/.config/systemd/user___ and name it _drift_user.service_
-  - Replace any occurrence of ___`$USERNAME`___ with the shell username of the user that will be running the Drift server
+## 🏭 Production
 
-  ```
-  ##########
-  # Drift Systemd Unit (User)
-  ##########
-  [Unit]
-  Description=Drift Server (User)
-  After=default.target
-  
-  [Service]
-  Type=simple
-  WorkingDirectory=/home/$USERNAME/Drift
-  ExecStart=/usr/bin/pnpm start
-  Restart=on-failure
-  
-  [Install]
-  WantedBy=default.target
-  ```
-  
-## Current status
+### Build & Run
 
-Drift is a work in progress. Below is a (rough) list of completed and envisioned features. If you want to help address any of them, please let me know regardless of your experience and I'll be happy to assist.
+```bash
+# Build for production
+yarn build:pkg
 
-- [x] Next.js 13 `app` directory
-- [x] creating and sharing private, public, password-protected, and unlisted posts
-  - [x] syntax highlighting
-  - [x] expiring posts
-- [x] responsive UI
-- [x] user auth
-  - [ ] SSO via HTTP header (Issue: [#11](https://github.com/MaxLeiter/Drift/issues/11))
-  - [x] SSO via GitHub OAuth
-- [x] downloading files (individually and entire posts)
-- [x] password protected posts
-- [x] postgres database
-- [x] administrator account / settings
-- [x] docker-compose (PRs: [#13](https://github.com/MaxLeiter/Drift/pull/13), [#75](https://github.com/MaxLeiter/Drift/pull/75))
-  - [ ] publish docker builds
-- [ ] user settings
-- [ ] works enough with JavaScript disabled
-- [ ] in-depth documentation
-- [x] customizable homepage, so the demo can exist as-is but other instances can be built from the same source. Environment variable for the file contents?
-- [ ] fleshed out API
-- [ ] Swappable database backends
-- [ ] More OAuth providers
+# Start production server
+yarn start:prod
+```
+
+### Running with PM2
+
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Build and start with PM2
+yarn build:pkg
+pm2 start yarn --name drift --interpreter bash -- start:prod
+
+# View logs
+pm2 logs drift
+
+# Restart
+pm2 restart drift
+```
+
+### Running with systemd
+
+Create `/etc/systemd/system/drift.service`:
+
+```ini
+[Unit]
+Description=Drift Server
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=drift
+WorkingDirectory=/opt/drift
+ExecStart=/usr/bin/yarn start:prod
+Restart=on-failure
+RestartSec=10
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then enable and start:
+
+```bash
+sudo systemctl enable drift
+sudo systemctl start drift
+```
+
+## 🐳 Docker
+
+### Using Pre-built Images
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/lbenicio/drift:latest
+
+# Run with environment variables
+docker run -d \
+  --name drift \
+  -p 3001:3001 \
+  -e DATABASE_URL="postgresql://user:password@host:5432/drift" \
+  -e NEXTAUTH_SECRET="your-secret-key" \
+  -e DRIFT_URL="https://your-domain.com" \
+  ghcr.io/lbenicio/drift:latest
+```
+
+### Using Docker Compose
+
+```yaml
+version: "3.8"
+
+services:
+  drift:
+    image: ghcr.io/lbenicio/drift:latest
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/drift
+      - NEXTAUTH_SECRET=your-secret-key-change-me
+      - DRIFT_URL=http://localhost:3001
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=drift
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+```
+
+### Building Locally
+
+```bash
+# Build the image
+docker build -t drift .
+
+# Run the container
+docker run -p 3001:3001 drift
+```
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```bash
+# Required
+DATABASE_URL="postgresql://user:password@localhost:5432/drift"
+NEXTAUTH_SECRET="generate-a-secure-random-string"
+
+# Application URL
+DRIFT_URL="http://localhost:3000"
+
+# Optional - Customization
+WELCOME_TITLE="Welcome to Drift"
+WELCOME_CONTENT="## Your custom welcome message in markdown"
+ENABLE_ADMIN="true"
+REGISTRATION_PASSWORD=""  # Leave empty for open registration
+
+# Optional - Authentication Providers
+CREDENTIAL_AUTH="true"
+
+# GitHub OAuth (optional)
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
+
+# Keycloak OAuth (optional)
+KEYCLOAK_ID=""
+KEYCLOAK_SECRET=""
+KEYCLOAK_ISSUER=""
+KEYCLOAK_NAME="Keycloak"
+```
+
+### Generating NEXTAUTH_SECRET
+
+```bash
+openssl rand -base64 32
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Originally created by [Max Leiter](https://github.com/MaxLeiter)
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Database ORM by [Prisma](https://prisma.io/)
