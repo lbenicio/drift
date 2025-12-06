@@ -1,0 +1,186 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g., 1.0.0)"
+        required: true
+        type: string
+      prerelease:
+        description: "Mark as pre-release"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "❌ Invalid version format: $VERSION"
+            echo "Version must follow semantic versioning (e.g., 1.0.0, 1.0.0-beta.1)"
+            exit 1
+          fi
+          echo "✅ Version format is valid: $VERSION"
+
+      - name: Check if release already exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+
+          # Check if tag exists
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "❌ Tag v$VERSION already exists!"
+            exit 1
+          fi
+
+          # Check if release exists
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "❌ Release v$VERSION already exists!"
+            exit 1
+          fi
+
+          echo "✅ No existing release found for v$VERSION"
+
+      - name: Extract changelog for version
+        id: changelog
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          CHANGELOG_FILE="CHANGELOG.md"
+
+          if [[ ! -f "$CHANGELOG_FILE" ]]; then
+            echo "❌ CHANGELOG.md not found!"
+            exit 1
+          fi
+
+          # Extract the section for this version
+          # Matches ## [X.X.X] or ## [X.X.X] - YYYY-MM-DD
+          CONTENT=$(awk -v ver="$VERSION" '
+            BEGIN { found=0; printing=0 }
+            /^## \[/ {
+              if (printing) exit
+              if ($0 ~ "\\[" ver "\\]") {
+                found=1
+                printing=1
+                next
+              }
+            }
+            printing { print }
+            END { if (!found) exit 1 }
+          ' "$CHANGELOG_FILE")
+
+          if [[ -z "$CONTENT" ]]; then
+            echo "❌ No changelog entry found for version $VERSION"
+            echo ""
+            echo "Please add a changelog entry in CHANGELOG.md:"
+            echo ""
+            echo "## [$VERSION] - $(date +%Y-%m-%d)"
+            echo ""
+            echo "### Added"
+            echo "- Your changes here"
+            echo ""
+            exit 1
+          fi
+
+          echo "✅ Found changelog entry for v$VERSION"
+          echo ""
+          echo "--- Changelog Content ---"
+          echo "$CONTENT"
+          echo "--- End Changelog ---"
+
+          # Save to file for multi-line support
+          echo "$CONTENT" > release_notes.md
+
+          # Also set as output (with delimiter for multi-line)
+          {
+            echo "notes<<EOF"
+            echo "$CONTENT"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Generate Prisma Client
+        run: yarn prisma generate
+
+      - name: Run tests
+        run: yarn test:unit
+        env:
+          NODE_ENV: test
+          DATABASE_URL: ""
+          NEXTAUTH_SECRET: test-secret
+          NEXTAUTH_URL: http://localhost:3000
+
+      - name: Build application
+        run: yarn build:pkg
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Update package.json version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+          echo "✅ Updated package.json to version $VERSION"
+
+      - name: Commit version bump
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Check if there are changes to commit
+          if git diff --quiet package.json; then
+            echo "No version change needed in package.json"
+          else
+            git add package.json
+            git commit -m "chore: bump version to $VERSION"
+            git push
+          fi
+
+      - name: Create Git tag
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+          git push origin "v$VERSION"
+          echo "✅ Created and pushed tag v$VERSION"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          PRERELEASE="${{ github.event.inputs.prerelease }}"
+
+          RELEASE_FLAGS=""
+          if [[ "$PRERELEASE" == "true" ]]; then
+            RELEASE_FLAGS="--prerelease"
+          fi
+
+          gh release create "v$VERSION" \
+            --title "v$VERSION" \
+            --notes-file release_notes.md \
+            $RELEASE_FLAGS
+
+          echo "✅ Created GitHub release v$VERSION"
+          echo ""
+          echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/v$VERSION"
