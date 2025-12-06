@@ -1,19 +1,20 @@
 import { parseQueryParam } from "@lib/server/parse-query-param";
 import { notFound } from "next/navigation";
 import { NextResponse } from "next/server";
-import { prisma } from "src/lib/server/prisma";
+import { prisma } from "@lib/server/prisma";
 
 export async function GET(
   req: Request,
   {
     params,
   }: {
-    params: {
-      fileId: string;
-    };
+    params: Promise<{
+      id: string;
+      title: string;
+    }>;
   },
 ) {
-  const id = params.fileId;
+  const { id, title } = await params;
   const download = new URL(req.url).searchParams.get("download") === "true";
 
   if (!id) {
@@ -30,8 +31,8 @@ export async function GET(
     return notFound();
   }
 
-  const { title, content: contentBuffer } = file;
-  const content = contentBuffer.toString("utf-8");
+  const { title: fileTitle, content: contentBuffer } = file;
+  const content = Buffer.from(contentBuffer).toString("utf-8");
 
   let headers: HeadersInit = {
     "Content-Type": "text/plain; charset=utf-8",
@@ -41,12 +42,12 @@ export async function GET(
   if (download) {
     headers = {
       ...headers,
-      "Content-Disposition": `attachment; filename="${title}"`,
+      "Content-Disposition": `attachment; filename="${fileTitle}"`,
     };
   } else {
     headers = {
       ...headers,
-      "Content-Disposition": `inline; filename="${title}"`,
+      "Content-Disposition": `inline; filename="${fileTitle}"`,
     };
   }
 

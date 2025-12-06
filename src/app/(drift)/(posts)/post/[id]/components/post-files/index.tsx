@@ -24,7 +24,7 @@ const PostFiles = ({ post: initialPost }: Props) => {
   }
 
   useEffect(() => {
-    let interval: NodeJS.Timer | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (post?.expiresAt) {
       interval = setInterval(() => {
         const expirationDate = new Date(post.expiresAt ? post.expiresAt : "");

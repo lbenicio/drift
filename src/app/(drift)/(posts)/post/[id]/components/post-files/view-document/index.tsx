@@ -127,10 +127,7 @@ const Document = ({ skeleton, ...props }: Props) => {
           </Link>
           {/* TODO: switch to api once next.js bug is fixed */}
           {/* Not /api/ because of rewrites defined in next.config.mjs */}
-          <DownloadButtons
-            rawLink={`/api/file/raw/${file?.id}`}
-            siteLink={file && post && isAllowedVisibilityForWebpage(post.visibility) ? `/pages/${file.id}/${getURLFriendlyTitle(file?.title || "")}` : undefined}
-          />
+          <DownloadButtons rawLink={`/api/file/raw/${file?.id}`} siteLink={file && post && isAllowedVisibilityForWebpage(post.visibility) ? `/pages/${file.id}/${getURLFriendlyTitle(file?.title || "")}` : undefined} />
         </CardHeader>
         <CardContent className="flex h-full flex-col pt-2">
           <DocumentTabs defaultTab={props.initialTab} staticPreview={file?.html} isEditing={false}>

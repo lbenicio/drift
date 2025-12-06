@@ -14,11 +14,11 @@ export const PostButtons = ({ post, loading }: { post?: PostWithFiles; loading?:
     if (!files?.length) return;
     const downloadZip = (await import("client-zip")).downloadZip;
     const blob = await downloadZip(
-		files.map((file) => {
+      files.map((file) => {
         return {
           name: file.title,
           input: file.content,
-          lastModified: new Date(file.updatedAt),
+          lastModified: file.updatedAt ? new Date(file.updatedAt) : new Date(),
         };
       }),
     ).blob();

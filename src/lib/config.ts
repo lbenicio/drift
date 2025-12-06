@@ -77,7 +77,7 @@ export const config = (env: Environment): Config => {
       env.WELCOME_CONTENT ??
       "## Drift is a self-hostable clone of GitHub Gist.\n\nIt is a simple way to save and share code and text snippets, with support for the following:\n\n- Render GitHub Extended Markdown\n- User authentication\n- Private, public, and password protected posts\n- Syntax highlighting and language detection\n- Drag-and-drop file uploading \n\n You can find the source code and sponsor development on [GitHub](https://github.com/MaxLeiter/drift).",
     welcome_title: env.WELCOME_TITLE ?? "Drift",
-    url: throwIfUndefined("DRIFT_URL", true) || `https://${throwIfUndefined("VERCEL_URL")}`,
+    url: throwIfUndefined("DRIFT_URL", true) || (env.VERCEL_URL ? `https://${env.VERCEL_URL}` : "http://localhost:3000"),
     github_client_id: env.GITHUB_CLIENT_ID ?? "",
     github_client_secret: env.GITHUB_CLIENT_SECRET ?? "",
     keycloak_client_id: env.KEYCLOAK_ID ?? "",

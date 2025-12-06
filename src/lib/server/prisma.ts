@@ -27,19 +27,19 @@ export const prisma =
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
-const postWithFiles = Prisma.validator<Prisma.PostArgs>()({
+const postWithFiles = Prisma.validator<Prisma.PostDefaultArgs>()({
   include: {
     files: true,
   },
 });
 
-const postWithAuthor = Prisma.validator<Prisma.PostArgs>()({
+const postWithAuthor = Prisma.validator<Prisma.PostDefaultArgs>()({
   include: {
     author: true,
   },
 });
 
-const postWithFilesAndAuthor = Prisma.validator<Prisma.PostArgs>()({
+const postWithFilesAndAuthor = Prisma.validator<Prisma.PostDefaultArgs>()({
   include: {
     files: true,
     author: true,
@@ -85,12 +85,13 @@ export type PostWithFilesAndAuthor = Omit<ServerPostWithFilesAndAuthor, "files" 
 };
 
 export function serverPostToClientPost(post: ServerPostWithFiles | ServerPostWithFilesAndAuthor): PostWithFilesAndAuthor | PostWithFiles {
+  const decoder = new TextDecoder("utf-8");
   let result: PostWithFiles | PostWithFilesAndAuthor = {
     ...post,
     files: post.files?.map((file) => ({
       ...file,
-      content: file.content?.toString("utf-8"),
-      html: file.html?.toString("utf-8"),
+      content: decoder.decode(file.content),
+      html: decoder.decode(file.html),
       updatedAt: file.updatedAt?.toISOString(),
       createdAt: file.createdAt?.toISOString(),
       deletedAt: file.deletedAt?.toISOString(),
@@ -135,9 +136,7 @@ export async function getFilesByPost(postId: string) {
   return files;
 }
 
-export async function getPostsByUser(userId: string): Promise<ServerPost[]>;
-export async function getPostsByUser(userId: string, includeFiles: true): Promise<ServerPostWithFiles[]>;
-export async function getPostsByUser(userId: ServerUser["id"], withFiles?: boolean) {
+export async function getPostsByUser(userId: string, withFiles?: boolean): Promise<ServerPostWithFiles[]> {
   const posts = await prisma.post.findMany({
     where: {
       authorId: userId,
@@ -145,27 +144,12 @@ export async function getPostsByUser(userId: ServerUser["id"], withFiles?: boole
     orderBy: {
       createdAt: "desc",
     },
-    select: {
-      id: true,
-      title: true,
-      createdAt: true,
-      updatedAt: true,
-      authorId: true,
-      expiresAt: true,
-      visibility: true,
-      ...(withFiles && {
-        files: {
-          select: {
-            id: true,
-            title: true,
-            createdAt: true,
-          },
-        },
-      }),
+    include: {
+      files: withFiles ?? false,
     },
   });
 
-  return posts;
+  return posts as ServerPostWithFiles[];
 }
 
 export const getUserById = async (userId: ServerUser["id"], selects?: Prisma.UserFindUniqueArgs["select"]) => {
@@ -233,7 +217,7 @@ export const getAllPosts = async (options?: Prisma.PostFindManyArgs): Promise<Se
   return posts;
 };
 
-export const userWithPosts = Prisma.validator<Prisma.UserArgs>()({
+export const userWithPosts = Prisma.validator<Prisma.UserDefaultArgs>()({
   include: {
     posts: true,
   },

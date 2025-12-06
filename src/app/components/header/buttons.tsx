@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useSyncExternalStore } from "react";
 import { useSelectedLayoutSegments } from "next/navigation";
 import FadeIn from "@components/fade-in";
 import { Circle, Home, Moon, PlusCircle, Settings, Sun, User, UserX } from "react-feather";
@@ -8,10 +9,9 @@ import { Button } from "@components/button";
 import Link from "@components/link";
 import { useSessionSWR } from "@lib/use-session-swr";
 import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
 import { cn } from "@lib/cn";
 
-const emptySubscribe = () => () => { };
+const emptySubscribe = () => () => {};
 const getSnapshot = () => true;
 const getServerSnapshot = () => false;
 
@@ -24,7 +24,7 @@ const SIGN_IN_WIDTH = 110;
 
 type Tab = {
   name: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
   value: string;
   width?: number;
 } & (
@@ -39,20 +39,13 @@ type Tab = {
 );
 
 function NavButton({ className, ...tab }: Tab & { className?: string }) {
-  const segment = useSelectedLayoutSegments().slice(-1)[0];
+  const segments = useSelectedLayoutSegments();
+  const segment = segments?.slice(-1)[0];
   const isActive = segment === tab.value.toLowerCase();
   const activeStyle = isActive ? "text-primary-500" : "text-gray-600";
   if (tab.onClick) {
     return (
-      <Button
-        key={tab.value}
-        onClick={tab.onClick}
-        className={cn(activeStyle, "w-full md:w-auto", className)}
-        aria-label={tab.name}
-        aria-current={isActive ? "page" : undefined}
-        data-tab={tab.value}
-        variant={"ghost"}
-      >
+      <Button key={tab.value} onClick={tab.onClick} className={cn(activeStyle, "w-full md:w-auto", className)} aria-label={tab.name} aria-current={isActive ? "page" : undefined} data-tab={tab.value} variant={"ghost"}>
         {tab.name ? tab.name : undefined}
       </Button>
     );
@@ -89,7 +82,7 @@ function ThemeButton() {
   );
 }
 
-export function HeaderButtons(): JSX.Element {
+export function HeaderButtons() {
   const { isAdmin, isAuthenticated, userId } = useSessionSWR();
 
   useEffect(() => {

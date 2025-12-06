@@ -10,11 +10,12 @@ export default async function PostLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }) {
-  const post = (await getPost(params.id)) as ServerPostWithFilesAndAuthor;
+  const { id } = await params;
+  const post = (await getPost(id)) as ServerPostWithFilesAndAuthor;
 
   // TODO: type-safe
   const clientPost = serverPostToClientPost(post) as PostWithFilesAndAuthor;

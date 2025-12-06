@@ -10,7 +10,7 @@ const ExpirationBadge = ({ postExpirationDate }: { postExpirationDate: Date | st
   const [timeUntilString, setTimeUntil] = useState<string | null>(expirationDate ? timeUntil(expirationDate) : null);
 
   useEffect(() => {
-    let interval: NodeJS.Timer | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (expirationDate) {
       interval = setInterval(() => {
         if (expirationDate) {

@@ -12,7 +12,7 @@ import { Moon, Sun } from "react-feather";
 import FadeIn from "@components/fade-in";
 import MobileHeader from "./mobile";
 
-const emptySubscribe = () => () => { };
+const emptySubscribe = () => () => {};
 const getSnapshot = () => true;
 const getServerSnapshot = () => false;
 
@@ -88,7 +88,7 @@ function NavLink({ href, disabled, children }: NavLinkProps) {
   const disabledClasses = "text-gray-600 hover:text-gray-400 cursor-not-allowed";
 
   const segments = useSelectedLayoutSegments();
-  const activeSegment = segments[segments.length - 1];
+  const activeSegment = segments?.[segments.length - 1];
   const isActive =
     activeSegment === href.slice(1) ||
     // special case / because it's an alias of /home/page.tsx

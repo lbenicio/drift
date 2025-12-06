@@ -16,12 +16,10 @@ const getWelcomeData = cache(async () => {
 export default async function Page() {
   return (
     <PageWrapper>
-      {/* @ts-expect-error because of async RSC */}
       <WelcomePost />
       <h2 className="mt-4 text-2xl font-bold">Recent Public Posts</h2>
       <ErrorBoundary>
         <Suspense fallback={<PostList skeleton hideActions hideSearch initialPosts={[]} />}>
-          {/* @ts-expect-error because of async RSC */}
           <PublicPostList />
         </Suspense>
       </ErrorBoundary>

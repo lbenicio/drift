@@ -12,13 +12,13 @@ function FadeIn({
   duration?: number;
   delay?: number;
   children: React.ReactNode;
-  as?: React.ElementType | JSX.Element;
+  as?: React.ElementType | React.ReactElement;
 } & React.HTMLAttributes<HTMLElement>) {
-  if (as !== null && typeof as === "object") {
-    return React.cloneElement(as, {
+  if (as !== null && React.isValidElement(as)) {
+    return React.cloneElement(as as React.ReactElement<{ className?: string; style?: React.CSSProperties }>, {
       className: styles.fadeIn,
       style: {
-        ...(as.props.style || {}),
+        ...((as as React.ReactElement<{ style?: React.CSSProperties }>).props.style || {}),
         animationDuration: duration + "ms",
         animationDelay: delay + "ms",
       },

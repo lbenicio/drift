@@ -9,7 +9,7 @@ import PostsPage from "./pages/posts";
 export type CmdKPage = "home" | "posts";
 export default function CmdK() {
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState<CmdKPage>("home");
 
   // Toggle the menu when ⌘K is pressed

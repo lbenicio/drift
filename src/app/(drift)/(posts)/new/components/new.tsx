@@ -43,7 +43,7 @@ export type Document = {
   id: string;
 };
 
-function Post({ initialPost, newPostParent }: { initialPost?: PostWithFiles; newPostParent?: string }): JSX.Element {
+function Post({ initialPost, newPostParent }: { initialPost?: PostWithFiles; newPostParent?: string }) {
   const { setToast } = useToasts();
   const router = useRouter();
   const [title, setTitle] = useState(getTitleForPostCopy(initialPost?.title) || "");
@@ -61,7 +61,7 @@ function Post({ initialPost, newPostParent }: { initialPost?: PostWithFiles; new
   const [docs, setDocs] = useState(defaultDocs);
 
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
-	const [isSubmitting, setSubmitting] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const sendRequest = useCallback(
     async (

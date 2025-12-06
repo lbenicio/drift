@@ -2,7 +2,7 @@ import { withMethods } from "@lib/api-middleware/with-methods";
 import { parseQueryParam } from "@lib/server/parse-query-param";
 import { getPostById } from "@lib/server/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "src/lib/server/prisma";
+import { prisma } from "@lib/server/prisma";
 import * as crypto from "crypto";
 import { getSession } from "@lib/server/session";
 import { verifyApiUser } from "@lib/server/verify-api-user";

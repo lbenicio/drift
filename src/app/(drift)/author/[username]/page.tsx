@@ -35,11 +35,7 @@ export default async function UserPage({
         }}
       >
         <TypographyH1>Public posts by {user?.displayName || "Anonymous"}</TypographyH1>
-        {user?.image ? (
-          <Image src={user.image} alt="" width={48} height={48} style={{ borderRadius: "50%", height: 32, width: 32 }} />
-        ) : (
-          <User />
-        )}
+        {user?.image ? <Image src={user.image} alt="" width={48} height={48} style={{ borderRadius: "50%", height: 32, width: 32 }} /> : <User />}
       </div>
       <Suspense fallback={<PostList hideSearch skeleton initialPosts={[]} />}>
         {/* @ts-expect-error because TS async JSX support is iffy */}

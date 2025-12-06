@@ -1,6 +1,6 @@
 import { getUserById } from "@lib/server/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "src/lib/server/prisma";
+import { prisma } from "@lib/server/prisma";
 import { withMethods } from "@lib/api-middleware/with-methods";
 import { getSession } from "next-auth/react";
 import { verifyApiUser } from "@lib/server/verify-api-user";

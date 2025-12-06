@@ -1,4 +1,5 @@
-import { ImageResponse, NextRequest } from "next/server";
+import { ImageResponse } from "next/og";
+import { NextRequest } from "next/server";
 
 const WIDTH = 1200;
 const HEIGHT = 630;

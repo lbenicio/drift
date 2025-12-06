@@ -2,7 +2,7 @@ import { withMethods } from "@lib/api-middleware/with-methods";
 import { parseQueryParam } from "@lib/server/parse-query-param";
 import { getCurrentUser } from "@lib/server/session";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "src/lib/server/prisma";
+import { prisma } from "@lib/server/prisma";
 import { deleteUser } from "@pages/api/user/[userId]";
 
 const actions = ["user", "post", "users", "posts", "set-role", "delete-user", "delete-post"] as const;

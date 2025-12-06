@@ -1,6 +1,6 @@
 import { CommandItem } from "@components/cmdk/cmdk";
 
-export default function Item({ children, shortcut, onSelect, icon }: { children: React.ReactNode; shortcut?: string; onSelect: (value: string) => void; icon: React.ReactNode }): JSX.Element {
+export default function Item({ children, shortcut, onSelect, icon }: { children: React.ReactNode; shortcut?: string; onSelect: (value: string) => void; icon: React.ReactNode }) {
   return (
     <CommandItem onSelect={onSelect}>
       {icon}

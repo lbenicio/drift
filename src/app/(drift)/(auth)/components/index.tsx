@@ -15,17 +15,7 @@ import Note from "@components/note";
 import { ErrorQueryParamsHandler } from "./query-handler";
 import { AuthProviders } from "@lib/server/auth-props";
 
-function Auth({
-  page,
-  credentialAuth,
-  requiresServerPassword,
-  authProviders,
-}: {
-  page: "signup" | "signin";
-  credentialAuth?: boolean;
-  requiresServerPassword?: boolean;
-  authProviders?: AuthProviders;
-}) {
+function Auth({ page, credentialAuth, requiresServerPassword, authProviders }: { page: "signup" | "signin"; credentialAuth?: boolean; requiresServerPassword?: boolean; authProviders?: AuthProviders }) {
   const [serverPassword, setServerPassword] = useState("");
   const { setToast } = useToasts();
   const signingIn = page === "signin";

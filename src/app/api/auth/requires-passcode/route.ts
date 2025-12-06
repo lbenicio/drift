@@ -6,7 +6,7 @@ export const getRequiresPasscode = async () => {
   return requiresPasscode;
 };
 
-export default async function GET(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const searchParams = new URL(req.nextUrl).searchParams;
   const slug = searchParams.get("slug");
 

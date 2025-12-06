@@ -11,16 +11,7 @@ interface StackProps {
   width?: string;
 }
 
-export const Stack: React.FC<StackProps> = ({
-  children,
-  className = "",
-  gap = "var(--gap)",
-  direction = "column",
-  alignItems = "flex-start",
-  justifyContent = "flex-start",
-  width = "100%",
-  style,
-}) => {
+export const Stack: React.FC<StackProps> = ({ children, className = "", gap = "var(--gap)", direction = "column", alignItems = "flex-start", justifyContent = "flex-start", width = "100%", style }) => {
   return (
     <div
       className={className}

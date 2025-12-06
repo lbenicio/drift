@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 const PAGES_REQUIRE_AUTH = ["/new", "/settings", "/mine", "/admin"];
 
 export default withAuth(
-  async function middleware(req) {
+  async function proxy(req) {
     const token = await getToken({ req });
 
     const isAuthed = !!token;

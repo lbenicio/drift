@@ -1,41 +1,38 @@
-import bundleAnalyzer from "@next/bundle-analyzer"
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+process.env.NEXTAUTH_URL = process.env.DRIFT_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	reactStrictMode: true,
-	rewrites() {
-		return [
-			{
-				source: "/file/raw/:id",
-				destination: `/api/raw/:id`
-			},
-			{
-				source: "/signout",
-				destination: `/api/auth/signout`
-			}
-		]
-	},
-	images: {
-		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "avatars.githubusercontent.com"
-			}
-		]
-	},
-	env: {
-		NEXT_PUBLIC_DRIFT_URL: process.env.DRIFT_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
-	},
-	typescript: {
-		ignoreBuildErrors: true
-	},
-	modularizeImports: {
-		"react-feather": {
-			transform: "react-feather/dist/icons/{{kebabCase member}}"
-		}
-	}
-}
+  reactStrictMode: true,
+  rewrites() {
+    return [
+      {
+        source: "/file/raw/:id",
+        destination: `/api/raw/:id`,
+      },
+      {
+        source: "/signout",
+        destination: `/api/auth/signout`,
+      },
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
+  },
+  env: {
+    NEXT_PUBLIC_DRIFT_URL: process.env.DRIFT_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"),
+  },
+  modularizeImports: {
+    "react-feather": {
+      transform: "react-feather/dist/icons/{{kebabCase member}}",
+    },
+  },
+};
 
-export default process.env.ANALYZE === "true"
-	? bundleAnalyzer({ enabled: true })(nextConfig)
-	: nextConfig
+export default process.env.ANALYZE === "true" ? bundleAnalyzer({ enabled: true })(nextConfig) : nextConfig;

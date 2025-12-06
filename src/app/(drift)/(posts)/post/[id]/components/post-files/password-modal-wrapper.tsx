@@ -76,7 +76,8 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
     } else if (isAuthor === false) {
       setIsPasswordModalOpen(true);
     }
-  }, [isAuthor, onSubmit, setToast]);  return <PasswordModal creating={false} onClose={onClose} onSubmit={onSubmit} isOpen={isPasswordModalOpen} />;
+  }, [isAuthor, onSubmit, setToast]);
+  return <PasswordModal creating={false} onClose={onClose} onSubmit={onSubmit} isOpen={isPasswordModalOpen} />;
 };
 
 export default PasswordModalWrapper;

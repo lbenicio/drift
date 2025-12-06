@@ -16,7 +16,7 @@ const formattingButtons = [
   { icon: <List />, name: "unordered-list", trigger: "unordered-list" as const },
 ];
 
-function FormattingIcons({ textareaRef, className }: { textareaRef?: RefObject<TextareaMarkdownRef>; className?: string }) {
+function FormattingIcons({ textareaRef, className }: { textareaRef?: RefObject<TextareaMarkdownRef | null>; className?: string }) {
   const handleAction = useCallback(
     (trigger: string) => {
       textareaRef?.current?.trigger(trigger);
