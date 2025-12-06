@@ -20,26 +20,31 @@
   "files.trimFinalNewlines": true,
   "files.eol": "\n",
   "files.exclude": {
-    "**/.git": true,
-    "**/.next": true,
-    "**/node_modules": true,
-    "**/.yarn": true,
-    "**/coverage": true
+    "**/.git/**": true,
+    "**/.next/**": true,
+    "**/node_modules/**": true,
+    "**/.yarn/**": true,
+    "**/coverage/**": true,
+    "**/*.lock": true,
+    "**/pnpm-lock.yaml": true
   },
   "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/.git/subtree-cache/**": true,
-    "**/node_modules/**": true,
+    "**/.git/**": true,
     "**/.next/**": true,
-    "**/.yarn/**": true
+    "**/node_modules/**": true,
+    "**/.yarn/**": true,
+    "**/coverage/**": true,
+    "**/*.lock": true,
+    "**/pnpm-lock.yaml": true
   },
 
   // Search settings
   "search.exclude": {
-    "**/node_modules": true,
-    "**/.next": true,
-    "**/.yarn": true,
-    "**/coverage": true,
+    "**/.git/**": true,
+    "**/.next/**": true,
+    "**/node_modules/**": true,
+    "**/.yarn/**": true,
+    "**/coverage/**": true,
     "**/*.lock": true,
     "**/pnpm-lock.yaml": true
   },
