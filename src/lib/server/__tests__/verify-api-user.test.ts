@@ -1,7 +1,6 @@
 import { verifyApiUser } from "@lib/server/verify-api-user";
-import { prismaMock } from "src/test/prisma.mock";
-import "src/test/react.mock";
 import { User } from "@prisma/client";
+import { prismaMock } from "@test/prisma.mock";
 
 describe("verifyApiUser", () => {
   const mockReq = {} as any;
