@@ -11,11 +11,7 @@ export function isGithubEnabled(): boolean {
 }
 
 export function isKeycloakEnabled(): boolean {
-	return !!(
-		config.keycloak_client_id &&
-		config.keycloak_client_secret &&
-		config.keycloak_issuer
-	)
+	return !!(config.keycloak_client_id && config.keycloak_client_secret && config.keycloak_issuer)
 }
 
 export function isCredentialEnabled(): boolean {

@@ -1,10 +1,6 @@
 import NewPost from "../../components/new"
 import { notFound, redirect } from "next/navigation"
-import {
-	getPostById,
-	serverPostToClientPost,
-	ServerPostWithFiles
-} from "@lib/server/prisma"
+import { getPostById, serverPostToClientPost, ServerPostWithFiles } from "@lib/server/prisma"
 import { getSession } from "@lib/server/session"
 
 async function NewFromExisting({

@@ -4,13 +4,7 @@ import clsx from "clsx"
 import styles from "./page.module.css"
 import Link from "@components/link"
 
-export default function Layout({
-	children,
-	forSites
-}: {
-	forSites?: boolean
-	children: React.ReactNode
-}) {
+export default function Layout({ children, forSites }: { forSites?: boolean; children: React.ReactNode }) {
 	return (
 		<div className={clsx(styles.page, forSites && styles.forSites)}>
 			<div className="flex h-screen flex-col justify-between">

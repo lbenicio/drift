@@ -7,11 +7,7 @@ import { File } from "react-feather"
 import { fetchWithUser } from "src/app/lib/fetch-with-user"
 import Item from "../item"
 
-export default function PostsPage({
-	setOpen
-}: {
-	setOpen: (open: boolean) => void
-}) {
+export default function PostsPage({ setOpen }: { setOpen: (open: boolean) => void }) {
 	const { session } = useSessionSWR()
 	const [posts, setPosts] = useState<PostWithFiles[]>()
 	const [isLoading, setLoading] = useState(true)

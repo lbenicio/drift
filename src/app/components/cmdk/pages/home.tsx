@@ -5,13 +5,7 @@ import { CmdKPage } from ".."
 import Item from "../item"
 import { CommandGroup } from "@components/cmdk/cmdk"
 
-export default function HomePage({
-	setOpen,
-	setPage
-}: {
-	setOpen: (open: boolean) => void
-	setPage: (page: CmdKPage) => void
-}) {
+export default function HomePage({ setOpen, setPage }: { setOpen: (open: boolean) => void; setPage: (page: CmdKPage) => void }) {
 	const router = useRouter()
 	const { setTheme, resolvedTheme } = useTheme()
 	return (

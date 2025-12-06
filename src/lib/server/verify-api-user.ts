@@ -12,10 +12,7 @@ import { getCurrentUser } from "./session"
  * @param res
  * @returns the user id if the user is authenticated, null otherwise
  */
-export const verifyApiUser = async (
-	req: NextApiRequest,
-	res: NextApiResponse
-) => {
+export const verifyApiUser = async (req: NextApiRequest, res: NextApiResponse) => {
 	const userId = parseQueryParam(req.query.userId)
 
 	if (!userId) {

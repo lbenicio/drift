@@ -7,13 +7,7 @@ import { Spinner } from "@components/spinner"
 import Link from "next/link"
 import { buttonVariants } from "@components/button"
 
-function FileDropdown({
-	files,
-	loading
-}: {
-	files: Pick<PostWithFiles, "files">["files"]
-	loading?: boolean
-}) {
+function FileDropdown({ files, loading }: { files: Pick<PostWithFiles, "files">["files"]; loading?: boolean }) {
 	if (loading) {
 		return (
 			<Popover>
@@ -49,10 +43,7 @@ function FileDropdown({
 		<ul className="text-sm">
 			{items.map((item) => (
 				<li key={item.id} className="flex">
-					<Link
-						href={`#${item.title}`}
-						className="flex w-full items-center gap-3 hover:underline"
-					>
+					<Link href={`#${item.title}`} className="flex w-full items-center gap-3 hover:underline">
 						{item.icon}
 						{item.title ? item.title : "Untitled"}
 					</Link>

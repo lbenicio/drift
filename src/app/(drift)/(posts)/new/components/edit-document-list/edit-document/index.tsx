@@ -16,28 +16,14 @@ type Props = {
 	onPaste?: (e: ClipboardEvent<HTMLTextAreaElement>) => void
 }
 
-function Document({
-	onPaste,
-	remove,
-	title,
-	content = "",
-	setTitle,
-	defaultTab = "edit",
-	handleOnContentChange
-}: Props) {
-	const onTitleChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) =>
-			setTitle ? setTitle(event.target.value) : null,
-		[setTitle]
-	)
+function Document({ onPaste, remove, title, content = "", setTitle, defaultTab = "edit", handleOnContentChange }: Props) {
+	const onTitleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => (setTitle ? setTitle(event.target.value) : null), [setTitle])
 
 	const removeFile = useCallback(
 		(remove?: () => void) => {
 			if (remove) {
 				if (content && content.trim().length > 0) {
-					const confirmed = window.confirm(
-						"Are you sure you want to remove this file?"
-					)
+					const confirmed = window.confirm("Are you sure you want to remove this file?")
 					if (confirmed) {
 						remove()
 					}
@@ -67,11 +53,7 @@ function Document({
 					/>
 					{remove && (
 						// no left border
-						<Button
-							onClick={() => removeFile(remove)}
-							variant="outline"
-							className="border-color-[var(--border)] rounded-l-none border-l-0"
-						>
+						<Button onClick={() => removeFile(remove)} variant="outline" className="border-color-[var(--border)] rounded-l-none border-l-0">
 							<Trash height={18} />
 						</Button>
 					)}

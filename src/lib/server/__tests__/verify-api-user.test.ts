@@ -21,9 +21,7 @@ describe("verifyApiUser", () => {
 	it("returns the user id if there is a userId param and it matches the authenticated user id", async () => {
 		mockReq.query = { userId: "123" }
 		const mockUser = { id: "123" }
-		const mockGetCurrentUser = prismaMock.user.findUnique.mockResolvedValue(
-			mockUser as User
-		)
+		const mockGetCurrentUser = prismaMock.user.findUnique.mockResolvedValue(mockUser as User)
 		const result = await verifyApiUser(mockReq, mockRes)
 		expect(mockGetCurrentUser).toHaveBeenCalled()
 		expect(result).toEqual("123")

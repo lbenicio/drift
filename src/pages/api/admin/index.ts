@@ -5,15 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { prisma } from "src/lib/server/prisma"
 import { deleteUser } from "../user/[userId]"
 
-const actions = [
-	"user",
-	"post",
-	"users",
-	"posts",
-	"set-role",
-	"delete-user",
-	"delete-post"
-] as const
+const actions = ["user", "post", "users", "posts", "set-role", "delete-user", "delete-post"] as const
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { action: requestedAction } = req.query

@@ -12,12 +12,7 @@ export default async function SignUpPage() {
 	const requiresPasscode = await getPasscode()
 	return (
 		<PageWrapper>
-			<Auth
-				page="signup"
-				requiresServerPassword={requiresPasscode}
-				credentialAuth={isCredentialEnabled()}
-				authProviders={getAuthProviders()}
-			/>
+			<Auth page="signup" requiresServerPassword={requiresPasscode} credentialAuth={isCredentialEnabled()} authProviders={getAuthProviders()} />
 		</PageWrapper>
 	)
 }

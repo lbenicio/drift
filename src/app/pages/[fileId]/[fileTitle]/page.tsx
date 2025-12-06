@@ -1,13 +1,5 @@
-import {
-	ALLOWED_VISIBILITIES_FOR_WEBPAGE,
-	isAllowedVisibilityForWebpage
-} from "@lib/constants"
-import {
-	getAllPosts,
-	getFileById,
-	getPostById,
-	ServerPostWithFiles
-} from "@lib/server/prisma"
+import { ALLOWED_VISIBILITIES_FOR_WEBPAGE, isAllowedVisibilityForWebpage } from "@lib/constants"
+import { getAllPosts, getFileById, getPostById, ServerPostWithFiles } from "@lib/server/prisma"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getURLFriendlyTitle } from "src/app/lib/get-url-friendly-title"
@@ -28,13 +20,10 @@ export default async function FilePage({
 	}
 
 	return (
-		<main className="mx-auto max-w-3xl px-4 dark:prose-invert dark:bg-gray-800">
-			<h1 className="prose-2xl text-foreground ">{file.title}</h1>
-			<hr className="my-4 border-foreground" />
-			<article
-				dangerouslySetInnerHTML={{ __html: file.html.toString("utf-8") }}
-				className="dark:prose-dark prose"
-			/>
+		<main className="dark:prose-invert mx-auto max-w-3xl px-4 dark:bg-gray-800">
+			<h1 className="prose-2xl text-foreground">{file.title}</h1>
+			<hr className="border-foreground my-4" />
+			<article dangerouslySetInnerHTML={{ __html: file.html.toString("utf-8") }} className="dark:prose-dark prose" />
 		</main>
 	)
 }

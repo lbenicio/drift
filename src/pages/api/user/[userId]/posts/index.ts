@@ -2,10 +2,7 @@ import { verifyApiUser } from "@lib/server/verify-api-user"
 import { NextApiRequest, NextApiResponse } from "next"
 import { prisma } from "@lib/server/prisma"
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const userId = await verifyApiUser(req, res)
 	if (!userId) {
 		return res.status(400).json({ error: "Missing userId or auth token" })

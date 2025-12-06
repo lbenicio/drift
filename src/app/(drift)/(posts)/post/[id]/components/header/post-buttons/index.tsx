@@ -7,13 +7,7 @@ import styles from "./post-buttons.module.css"
 import { useRouter } from "next/navigation"
 import { PostWithFiles } from "@lib/server/prisma"
 
-export const PostButtons = ({
-	post,
-	loading
-}: {
-	post?: PostWithFiles
-	loading?: boolean
-}) => {
+export const PostButtons = ({ post, loading }: { post?: PostWithFiles; loading?: boolean }) => {
 	const router = useRouter()
 	const { files, id: postId, parentId, title } = post || {}
 	const downloadClick = async () => {
@@ -55,11 +49,7 @@ export const PostButtons = ({
 						View Parent
 					</Button>
 				)}
-				<Button
-					variant={"secondary"}
-					onClick={downloadClick}
-					className="border-r"
-				>
+				<Button variant={"secondary"} onClick={downloadClick} className="border-r">
 					Download as ZIP Archive
 				</Button>
 				<FileDropdown loading={loading} files={files || []} />

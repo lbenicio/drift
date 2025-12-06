@@ -55,9 +55,7 @@ export default function CmdK() {
 		<CommandDialog open={open} onOpenChange={setOpen}>
 			<CommandList>
 				<CommandEmpty>No results found.</CommandEmpty>
-				{page === "home" ? (
-					<HomePage setPage={setPage} setOpen={setOpen} />
-				) : null}
+				{page === "home" ? <HomePage setPage={setPage} setOpen={setOpen} /> : null}
 				{page === "posts" ? <PostsPage setOpen={setOpen} /> : null}
 			</CommandList>
 			<CommandInput />

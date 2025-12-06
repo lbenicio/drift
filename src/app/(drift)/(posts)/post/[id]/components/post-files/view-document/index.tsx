@@ -27,28 +27,13 @@ type Props = (
 ) &
 	SharedProps
 
-const DownloadButtons = ({
-	rawLink,
-	siteLink
-}: {
-	rawLink?: string
-	siteLink?: string
-}) => {
+const DownloadButtons = ({ rawLink, siteLink }: { rawLink?: string; siteLink?: string }) => {
 	return (
 		<ButtonGroup>
 			<Tooltip content="Download" delayDuration={200}>
-				<Link
-					href={`${rawLink}?download=true`}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Button
-						aria-label="Download"
-						size="sm"
-						className="border-none bg-transparent"
-						variant={"ghost"}
-					>
-						<Download className="h-4 w-4 " />
+				<Link href={`${rawLink}?download=true`} target="_blank" rel="noopener noreferrer">
+					<Button aria-label="Download" size="sm" className="border-none bg-transparent" variant={"ghost"}>
+						<Download className="h-4 w-4" />
 						<span className="sr-only">Download</span>
 					</Button>
 				</Link>
@@ -56,12 +41,7 @@ const DownloadButtons = ({
 			{rawLink ? (
 				<Tooltip content="Open raw in new tab" delayDuration={200}>
 					<Link href={rawLink || ""} target="_blank" rel="noopener noreferrer">
-						<Button
-							aria-label="Open raw file in new tab"
-							className="border-none bg-transparent"
-							size="sm"
-							variant={"ghost"}
-						>
+						<Button aria-label="Open raw file in new tab" className="border-none bg-transparent" size="sm" variant={"ghost"}>
 							<ExternalLink className="h-4 w-4" />
 							<span className="sr-only">Open raw file in new tab</span>
 						</Button>
@@ -71,12 +51,7 @@ const DownloadButtons = ({
 			{siteLink ? (
 				<Tooltip content="Open as webpage" delayDuration={200}>
 					<Link href={siteLink || ""} target="_blank" rel="noopener noreferrer">
-						<Button
-							aria-label="Open as webpage"
-							className="border-none bg-transparent"
-							size="sm"
-							variant={"ghost"}
-						>
+						<Button aria-label="Open as webpage" className="border-none bg-transparent" size="sm" variant={"ghost"}>
 							<Globe className="h-4 w-4" />
 							<span className="sr-only">Open as webpage</span>
 						</Button>
@@ -97,11 +72,7 @@ const Document = ({ skeleton, ...props }: Props) => {
 					</div>
 					<div className={styles.documentContainer}>
 						<Skeleton width={175} height={36} borderRadius={"4px 4px 0 0"} />
-						<Skeleton
-							width={"100%"}
-							height={350}
-							borderRadius={"0 0 4px 4px"}
-						/>
+						<Skeleton width={"100%"} height={350} borderRadius={"0 0 4px 4px"} />
 					</div>
 				</div>
 			</>
@@ -145,10 +116,7 @@ const Document = ({ skeleton, ...props }: Props) => {
 	return (
 		<>
 			<Card className="border-gray-200 dark:border-gray-900">
-				<CardHeader
-					id={file?.title}
-					className="flex flex-row items-center justify-between bg-gray-200 py-1 dark:bg-gray-900"
-				>
+				<CardHeader id={file?.title} className="flex flex-row items-center justify-between bg-gray-200 py-1 dark:bg-gray-900">
 					<Link
 						href={`#${file?.title}`}
 						aria-label="File"
@@ -161,19 +129,11 @@ const Document = ({ skeleton, ...props }: Props) => {
 					{/* Not /api/ because of rewrites defined in next.config.mjs */}
 					<DownloadButtons
 						rawLink={`/api/file/raw/${file?.id}`}
-						siteLink={
-							file && post && isAllowedVisibilityForWebpage(post.visibility)
-								? `/pages/${file.id}/${getURLFriendlyTitle(file?.title || "")}`
-								: undefined
-						}
+						siteLink={file && post && isAllowedVisibilityForWebpage(post.visibility) ? `/pages/${file.id}/${getURLFriendlyTitle(file?.title || "")}` : undefined}
 					/>
 				</CardHeader>
 				<CardContent className="flex h-full flex-col pt-2">
-					<DocumentTabs
-						defaultTab={props.initialTab}
-						staticPreview={file?.html}
-						isEditing={false}
-					>
+					<DocumentTabs defaultTab={props.initialTab} staticPreview={file?.html} isEditing={false}>
 						{file?.content || ""}
 					</DocumentTabs>
 				</CardContent>

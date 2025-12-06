@@ -1,8 +1,4 @@
-import {
-	PostWithFilesAndAuthor,
-	serverPostToClientPost,
-	ServerPostWithFilesAndAuthor
-} from "@lib/server/prisma"
+import { PostWithFilesAndAuthor, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma"
 import ScrollToTop from "@components/scroll-to-top"
 import { PostButtons } from "./components/header/post-buttons"
 import styles from "./layout.module.css"

@@ -16,25 +16,19 @@ type UseApiTokens = {
 const TOKENS_ENDPOINT = "/api/user/tokens"
 
 export function useApiTokens({ userId, initialTokens }: UseApiTokens) {
-	const { data, mutate, error, isLoading } = useSWR<SerializedApiToken[]>(
-		userId ? "/api/user/tokens?userId=" + userId : null,
-		{
-			refreshInterval: 10000,
-			fallbackData: initialTokens
-		}
-	)
+	const { data, mutate, error, isLoading } = useSWR<SerializedApiToken[]>(userId ? "/api/user/tokens?userId=" + userId : null, {
+		refreshInterval: 10000,
+		fallbackData: initialTokens
+	})
 
 	async function createToken(newToken: string) {
 		if (!newToken) {
 			throw new Error("Token name is required")
 		}
 
-		const res = await fetch(
-			`${TOKENS_ENDPOINT}?userId=${userId}&name=${newToken}`,
-			{
-				method: "POST"
-			}
-		)
+		const res = await fetch(`${TOKENS_ENDPOINT}?userId=${userId}&name=${newToken}`, {
+			method: "POST"
+		})
 
 		const response = (await res.json()) as ApiResponse<SerializedApiToken>
 		if (response.error) {

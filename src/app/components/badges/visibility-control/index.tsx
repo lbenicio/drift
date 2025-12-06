@@ -17,11 +17,7 @@ type Props = {
 	visibility: string
 }
 
-function VisibilityControl({
-	authorId,
-	postId,
-	visibility: postVisibility
-}: Props) {
+function VisibilityControl({ authorId, postId, visibility: postVisibility }: Props) {
 	const { session } = useSessionSWR()
 	const isAuthor = session?.user && session?.user?.id === authorId
 	const [visibility, setVisibility] = useState<string>(postVisibility)
@@ -90,46 +86,20 @@ function VisibilityControl({
 	return (
 		<FadeIn className="mt-8">
 			<ButtonGroup>
-				<Button
-					disabled={visibility === "private"}
-					variant={"outline"}
-					onClick={() => onSubmit("private")}
-					loading={isSubmitting === "private"}
-				>
+				<Button disabled={visibility === "private"} variant={"outline"} onClick={() => onSubmit("private")} loading={isSubmitting === "private"}>
 					Make Private
 				</Button>
-				<Button
-					disabled={visibility === "public"}
-					variant={"outline"}
-					onClick={() => onSubmit("public")}
-					loading={isSubmitting === "public"}
-				>
+				<Button disabled={visibility === "public"} variant={"outline"} onClick={() => onSubmit("public")} loading={isSubmitting === "public"}>
 					Make Public
 				</Button>
-				<Button
-					disabled={visibility === "unlisted"}
-					variant={"outline"}
-					onClick={() => onSubmit("unlisted")}
-					loading={isSubmitting === "unlisted"}
-				>
+				<Button disabled={visibility === "unlisted"} variant={"outline"} onClick={() => onSubmit("unlisted")} loading={isSubmitting === "unlisted"}>
 					Make Unlisted
 				</Button>
-				<Button
-					onClick={() => onSubmit("protected")}
-					variant={"outline"}
-					loading={isSubmitting === "protected"}
-				>
-					{visibility === "protected"
-						? "Change Password"
-						: "Protect with Password"}
+				<Button onClick={() => onSubmit("protected")} variant={"outline"} loading={isSubmitting === "protected"}>
+					{visibility === "protected" ? "Change Password" : "Protect with Password"}
 				</Button>
 			</ButtonGroup>
-			<PasswordModal
-				creating={true}
-				isOpen={passwordModalVisible}
-				onClose={onClosePasswordModal}
-				onSubmit={submitPassword}
-			/>
+			<PasswordModal creating={true} isOpen={passwordModalVisible} onClose={onClosePasswordModal} onSubmit={submitPassword} />
 		</FadeIn>
 	)
 }

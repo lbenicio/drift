@@ -12,9 +12,7 @@ import { User } from "@prisma/client"
 
 function Profile() {
 	const { session } = useSessionSWR()
-	const { data: userData } = useSWR<User>(
-		session?.user?.id ? `/api/user/${session?.user?.id}` : null
-	)
+	const { data: userData } = useSWR<User>(session?.user?.id ? `/api/user/${session?.user?.id}` : null)
 	const [name, setName] = useState<string>(userData?.displayName || "")
 	const [submitting, setSubmitting] = useState<boolean>(false)
 	const { setToast } = useToasts()
@@ -79,34 +77,15 @@ function Profile() {
 	// 	)
 	return (
 		<>
-			<Note type="warning">
-				Your display name is publicly available on your profile.
-			</Note>
+			<Note type="warning">Your display name is publicly available on your profile.</Note>
 			<form onSubmit={onSubmit} className={styles.form}>
 				<div>
 					<label htmlFor="displayName">Display name</label>
-					<Input
-						id="displayName"
-						width={"100%"}
-						placeholder="my name"
-						value={name || ""}
-						onChange={handleNameChange}
-						aria-label="Display name"
-						minLength={1}
-						maxLength={32}
-					/>
+					<Input id="displayName" width={"100%"} placeholder="my name" value={name || ""} onChange={handleNameChange} aria-label="Display name" minLength={1} maxLength={32} />
 				</div>
 				<div>
 					<label htmlFor="email">Email</label>
-					<Input
-						id="email"
-						type="email"
-						width={"100%"}
-						placeholder="my@email.io"
-						value={session?.user.email || ""}
-						disabled
-						aria-label="Email"
-					/>
+					<Input id="email" type="email" width={"100%"} placeholder="my@email.io" value={session?.user.email || ""} disabled aria-label="Email" />
 				</div>
 				{/* <div>
                 <label htmlFor="image">User Avatar</label>

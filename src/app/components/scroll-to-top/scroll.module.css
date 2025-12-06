@@ -11,7 +11,9 @@
 	pointer-events: none;
 	opacity: 0;
 	transform: translateY(16px);
-	transition: transform 0.2s, opacity 0.2s;
+	transition:
+		transform 0.2s,
+		opacity 0.2s;
 	cursor: pointer;
 	bottom: var(--gap-double);
 	will-change: transform, opacity;

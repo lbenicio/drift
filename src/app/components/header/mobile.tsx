@@ -14,10 +14,7 @@ export default function MobileHeader() {
 
 	return (
 		<DropdownMenu.DropdownMenu>
-			<DropdownMenu.DropdownMenuTrigger
-				className={buttonVariants({ variant: "ghost" })}
-				asChild
-			>
+			<DropdownMenu.DropdownMenuTrigger className={buttonVariants({ variant: "ghost" })} asChild>
 				<Button aria-label="Menu" variant={"ghost"}>
 					<Menu />
 				</Button>
@@ -25,10 +22,7 @@ export default function MobileHeader() {
 			<DropdownMenu.DropdownMenuPortal>
 				<DropdownMenu.DropdownMenuContent>
 					{HeaderButtons().props.children.map((button: JSX.Element) => (
-						<DropdownMenu.DropdownMenuItem
-							key={`mobile-${button?.key}`}
-							onClick={onClick}
-						>
+						<DropdownMenu.DropdownMenuItem key={`mobile-${button?.key}`} onClick={onClick}>
 							{button}
 						</DropdownMenu.DropdownMenuItem>
 					))}

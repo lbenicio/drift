@@ -35,10 +35,7 @@ afterAll(async () => {
 	await sequelize.close()
 })
 
-async function createPost(
-	response: GistResponse,
-	override: Partial<AdditionalPostInformation> = {}
-): Promise<Post> {
+async function createPost(response: GistResponse, override: Partial<AdditionalPostInformation> = {}): Promise<Post> {
 	const info: AdditionalPostInformation = {
 		userId: aUser.id,
 		visibility: "public",
@@ -59,9 +56,7 @@ describe("Gist", () => {
 			truncated: true
 		}
 
-		expect(createPost(tooManyFiles)).rejects.toEqual(
-			new Error("Gist has too many files to import")
-		)
+		expect(createPost(tooManyFiles)).rejects.toEqual(new Error("Gist has too many files to import"))
 	})
 
 	it("should fail if the gist has no files", () => {
@@ -73,9 +68,7 @@ describe("Gist", () => {
 			truncated: false
 		}
 
-		expect(createPost(noFiles)).rejects.toEqual(
-			new Error("The gist did not have any files")
-		)
+		expect(createPost(noFiles)).rejects.toEqual(new Error("The gist did not have any files"))
 	})
 
 	it("should create a post for the user with all the files", async () => {
@@ -112,9 +105,7 @@ describe("Gist", () => {
 		expect(post!.visibility).toBe("protected")
 		expect(post!.password).toBe("password")
 		expect(post!.expiresAt!.getDate()).toBe(expiresAt.getDate())
-		expect(post!.createdAt.getDate()).toBe(
-			new Date("2022-04-05T18:23:31Z").getDate()
-		)
+		expect(post!.createdAt.getDate()).toBe(new Date("2022-04-05T18:23:31Z").getDate())
 
 		expect(post!.files).toHaveLength(1)
 		expect(post!.files![0].title).toBe("README.md")

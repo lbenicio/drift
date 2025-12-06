@@ -9,10 +9,7 @@ import styles from "./scroll.module.css"
 const ScrollToTop = () => {
 	const [shouldShow, setShouldShow] = useState(false)
 
-	const isReducedMotion =
-		typeof window !== "undefined"
-			? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-			: false
+	const isReducedMotion = typeof window !== "undefined" ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false
 
 	useEffect(() => {
 		// if user is scrolled, set visible
@@ -30,17 +27,8 @@ const ScrollToTop = () => {
 
 	return (
 		<div className={styles.root}>
-			<Tooltip
-				content="Scroll to Top"
-				className={`${styles["scroll-up"]} ${
-					shouldShow ? styles["scroll-up-shown"] : ""
-				}`}
-			>
-				<Button
-					aria-label="Scroll to Top"
-					onClick={onClick}
-					variant={"secondary"}
-				>
+			<Tooltip content="Scroll to Top" className={`${styles["scroll-up"]} ${shouldShow ? styles["scroll-up-shown"] : ""}`}>
+				<Button aria-label="Scroll to Top" onClick={onClick} variant={"secondary"}>
 					<ChevronUp />
 				</Button>
 			</Tooltip>

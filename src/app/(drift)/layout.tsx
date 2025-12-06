@@ -11,18 +11,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--inter-font" })
 
 const CmdK = dynamic(() => import("@components/cmdk"), { ssr: false })
 
-export default async function RootLayout({
-	children
-}: {
-	children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		// suppressHydrationWarning is required because of next-themes
-		<html
-			lang="en"
-			className={clsx(inter.variable, "mx-auto w-[var(--main-content)]")}
-			suppressHydrationWarning
-		>
+		<html lang="en" className={clsx(inter.variable, "mx-auto w-[var(--main-content)]")} suppressHydrationWarning>
 			<body>
 				<Toasts />
 				<Providers>

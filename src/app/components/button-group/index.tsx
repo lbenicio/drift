@@ -8,14 +8,7 @@ export default function ButtonGroup({
 	verticalIfMobile?: boolean
 } & React.HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div
-			className={clsx(
-				styles["button-group"],
-				verticalIfMobile && styles.verticalIfMobile,
-				props.className
-			)}
-			{...props}
-		>
+		<div className={clsx(styles["button-group"], verticalIfMobile && styles.verticalIfMobile, props.className)} {...props}>
 			{children}
 		</div>
 	)

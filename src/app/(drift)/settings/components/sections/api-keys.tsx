@@ -5,10 +5,7 @@ import { Input } from "@components/input"
 import Note from "@components/note"
 import { Spinner } from "@components/spinner"
 import { useToasts } from "@components/toasts"
-import {
-	SerializedApiToken,
-	useApiTokens
-} from "src/app/hooks/swr/use-api-tokens"
+import { SerializedApiToken, useApiTokens } from "src/app/hooks/swr/use-api-tokens"
 import { copyToClipboard } from "src/app/lib/copy-to-clipboard"
 import { useState } from "react"
 import styles from "./api-keys.module.css"
@@ -16,11 +13,7 @@ import { useSessionSWR } from "@lib/use-session-swr"
 import { TypographyH4 } from "@components/typography"
 
 // need to pass in the accessToken
-const APIKeys = ({
-	tokens: initialTokens
-}: {
-	tokens?: SerializedApiToken[]
-}) => {
+const APIKeys = ({ tokens: initialTokens }: { tokens?: SerializedApiToken[] }) => {
 	const { session } = useSessionSWR()
 	const { setToast } = useToasts()
 	const { data, error, createToken, expireToken } = useApiTokens({
@@ -69,27 +62,13 @@ const APIKeys = ({
 	const hasError = Boolean(error)
 	return (
 		<>
-			{!hasError && (
-				<Note type="info">
-					API keys allow you to access the API from 3rd party tools.
-				</Note>
-			)}
+			{!hasError && <Note type="info">API keys allow you to access the API from 3rd party tools.</Note>}
 			{hasError && <Note type="error">{error?.message}</Note>}
 			<form className={styles.form}>
 				<TypographyH4>Create new</TypographyH4>
 				<fieldset className={styles.fieldset}>
-					<Input
-						type="text"
-						value={newToken}
-						onChange={onChangeNewToken}
-						aria-label="API Key name"
-						placeholder="Name"
-					/>
-					<Button
-						onClick={onCreateTokenClick}
-						disabled={!newToken}
-						loading={submitting}
-					>
+					<Input type="text" value={newToken} onChange={onChangeNewToken} aria-label="API Key name" placeholder="Name" />
+					<Button onClick={onCreateTokenClick} disabled={!newToken} loading={submitting}>
 						Submit
 					</Button>
 				</fieldset>
@@ -121,9 +100,7 @@ const APIKeys = ({
 							</tbody>
 						</table>
 					) : (
-						<p className="p-4 text-center text-muted-foreground">
-							No API keys found.
-						</p>
+						<p className="text-muted-foreground p-4 text-center">No API keys found.</p>
 					)
 				) : (
 					<div style={{ marginTop: "var(--gap-quarter)" }}>

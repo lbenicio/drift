@@ -88,11 +88,7 @@ export function UserTable({
 							{user.id}
 						</td>
 						<td>
-							<Button
-								variant={"destructive"}
-								onClick={() => deleteUser(user.id)}
-								size={"sm"}
-							>
+							<Button variant={"destructive"} onClick={() => deleteUser(user.id)} size={"sm"}>
 								Delete
 							</Button>
 						</td>
@@ -184,11 +180,7 @@ export function PostTable({
 						<td>{post.visibility}</td>
 						<td>{post.id}</td>
 						<td>
-							<Button
-								variant={"destructive"}
-								size={"sm"}
-								onClick={() => deletePost(post.id)}
-							>
+							<Button variant={"destructive"} size={"sm"} onClick={() => deletePost(post.id)}>
 								Delete
 							</Button>
 						</td>

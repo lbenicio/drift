@@ -18,23 +18,16 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
 	const router = useRouter()
 	const { setToast } = useToasts()
 	const { session, isLoading } = useSessionSWR()
-	const isAuthor = isLoading
-		? undefined
-		: session?.user
-		? session?.user?.id === authorId
-		: false
+	const isAuthor = isLoading ? undefined : session?.user ? session?.user?.id === authorId : false
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 	const onSubmit = useCallback(
 		async (password: string) => {
-			const res = await fetchWithUser(
-				`/api/post/${postId}?password=${password}`,
-				{
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json"
-					}
+			const res = await fetchWithUser(`/api/post/${postId}?password=${password}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
 				}
-			)
+			})
 
 			if (!res.ok) {
 				setToast({
@@ -74,8 +67,7 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
 		if (isAuthor === true) {
 			onSubmit("author")
 			setToast({
-				message:
-					"You're the author of this post, so you automatically have access to it.",
+				message: "You're the author of this post, so you automatically have access to it.",
 				type: "default"
 			})
 		} else if (isAuthor === false) {
@@ -83,14 +75,7 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
 		}
 	}, [isAuthor, onSubmit, setToast])
 
-	return (
-		<PasswordModal
-			creating={false}
-			onClose={onClose}
-			onSubmit={onSubmit}
-			isOpen={isPasswordModalOpen}
-		/>
-	)
+	return <PasswordModal creating={false} onClose={onClose} onSubmit={onSubmit} isOpen={isPasswordModalOpen} />
 }
 
 export default PasswordModalWrapper

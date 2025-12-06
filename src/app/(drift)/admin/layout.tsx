@@ -2,11 +2,7 @@ import { getMetadata } from "src/app/lib/metadata"
 import { getCurrentUser } from "@lib/server/session"
 import { redirect } from "next/navigation"
 
-export default async function AdminLayout({
-	children
-}: {
-	children: React.ReactNode
-}) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
 	const user = await getCurrentUser()
 	const isAdmin = user?.role === "admin"
 

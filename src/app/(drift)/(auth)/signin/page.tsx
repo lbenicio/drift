@@ -7,11 +7,7 @@ import { PageWrapper } from "@components/page-wrapper"
 export default function SignInPage() {
 	return (
 		<PageWrapper>
-			<Auth
-				page="signin"
-				credentialAuth={isCredentialEnabled()}
-				authProviders={getAuthProviders()}
-			/>
+			<Auth page="signin" credentialAuth={isCredentialEnabled()} authProviders={getAuthProviders()} />
 		</PageWrapper>
 	)
 }

@@ -30,10 +30,7 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse<unknown>) {
 
 		let hashedPassword = ""
 		if (req.body.visibility === "protected") {
-			hashedPassword = crypto
-				.createHash("sha256")
-				.update(req.body.password)
-				.digest("hex")
+			hashedPassword = crypto.createHash("sha256").update(req.body.password).digest("hex")
 		}
 
 		const fileHtml = await Promise.all(
@@ -60,15 +57,8 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse<unknown>) {
 							return {
 								title: file.title,
 								content: Buffer.from(file.content, "utf-8"),
-								sha: crypto
-									.createHash("sha256")
-									.update(file.content)
-									.digest("hex")
-									.toString(),
-								html: Buffer.from(
-									fileHtml[files.indexOf(file)] as string,
-									"utf-8"
-								),
+								sha: crypto.createHash("sha256").update(file.content).digest("hex").toString(),
+								html: Buffer.from(fileHtml[files.indexOf(file)] as string, "utf-8"),
 								userId
 							}
 						})

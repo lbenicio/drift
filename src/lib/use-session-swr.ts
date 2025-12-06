@@ -23,8 +23,7 @@ export function useSessionSWR(swrOpts: SWRConfiguration = {}) {
 		/** undefined while loading */
 		isAuthenticated: session?.user?.id ? true : isLoading ? undefined : false,
 		/** undefined while loading */
-		isAdmin:
-			session?.user?.role === "admin" ? true : isLoading ? undefined : false,
+		isAdmin: session?.user?.role === "admin" ? true : isLoading ? undefined : false,
 		userId: session?.user?.id
 	}
 }

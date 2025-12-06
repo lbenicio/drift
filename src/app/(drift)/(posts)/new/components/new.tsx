@@ -21,24 +21,15 @@ import { Spinner } from "@components/spinner"
 import { cn } from "@lib/cn"
 import { Calendar as CalendarIcon } from "react-feather"
 
-const DatePicker = dynamic(
-	() => import("@components/date-picker").then((m) => m.DatePicker),
-	{
-		ssr: false,
-		loading: () => (
-			<Button
-				variant={"outline"}
-				className={cn(
-					"w-[280px] justify-start text-left font-normal",
-					"text-muted-foreground"
-				)}
-			>
-				<CalendarIcon className="mr-2 h-4 w-4" />
-				<span>Won&apos;t expire</span>
-			</Button>
-		)
-	}
-)
+const DatePicker = dynamic(() => import("@components/date-picker").then((m) => m.DatePicker), {
+	ssr: false,
+	loading: () => (
+		<Button variant={"outline"} className={cn("w-[280px] justify-start text-left font-normal", "text-muted-foreground")}>
+			<CalendarIcon className="mr-2 h-4 w-4" />
+			<span>Won&apos;t expire</span>
+		</Button>
+	)
+})
 
 const emptyDoc = {
 	title: "",
@@ -52,21 +43,11 @@ export type Document = {
 	id: string
 }
 
-function Post({
-	initialPost,
-	newPostParent
-}: {
-	initialPost?: PostWithFiles
-	newPostParent?: string
-}): JSX.Element {
+function Post({ initialPost, newPostParent }: { initialPost?: PostWithFiles; newPostParent?: string }): JSX.Element {
 	const { setToast } = useToasts()
 	const router = useRouter()
-	const [title, setTitle] = useState(
-		getTitleForPostCopy(initialPost?.title) || ""
-	)
-	const [description /*, setDescription */] = useState(
-		initialPost?.description || ""
-	)
+	const [title, setTitle] = useState(getTitleForPostCopy(initialPost?.title) || "")
+	const [description /*, setDescription */] = useState(initialPost?.description || "")
 	const [expiresAt, setExpiresAt] = useState<Date>()
 
 	const defaultDocs: Document[] = initialPost
@@ -74,7 +55,7 @@ function Post({
 				title: doc.title,
 				content: doc.content,
 				id: doc.id
-		  }))
+			}))
 		: [emptyDoc]
 
 	const [docs, setDocs] = useState(defaultDocs)
@@ -207,17 +188,13 @@ function Post({
 
 	function updateDocTitle(i: number) {
 		return (title: string) => {
-			setDocs((docs) =>
-				docs.map((doc, index) => (i === index ? { ...doc, title } : doc))
-			)
+			setDocs((docs) => docs.map((doc, index) => (i === index ? { ...doc, title } : doc)))
 		}
 	}
 
 	function updateDocContent(i: number) {
 		return (content: string) => {
-			setDocs((docs) =>
-				docs.map((doc, index) => (i === index ? { ...doc, content } : doc))
-			)
+			setDocs((docs) => docs.map((doc, index) => (i === index ? { ...doc, content } : doc)))
 		}
 	}
 
@@ -229,8 +206,7 @@ function Post({
 
 	function uploadDocs(files: Document[]) {
 		// if no title is set and the only document is empty,
-		const isFirstDocEmpty =
-			docs.length <= 1 && (docs.length ? docs[0].title === "" : true)
+		const isFirstDocEmpty = docs.length <= 1 && (docs.length ? docs[0].title === "" : true)
 		const shouldSetTitle = !title && isFirstDocEmpty
 		if (shouldSetTitle) {
 			if (files.length === 1) {
@@ -258,13 +234,7 @@ function Post({
 		<div className="flex flex-1 flex-col gap-4">
 			<Title title={title} onChange={onChangeTitle} className="py-4" />
 			{/* <Description description={description} onChange={onChangeDescription} /> */}
-			<EditDocumentList
-				onPaste={onPaste}
-				docs={docs}
-				updateDocTitle={updateDocTitle}
-				updateDocContent={updateDocContent}
-				removeDoc={removeDoc}
-			/>
+			<EditDocumentList onPaste={onPaste} docs={docs} updateDocTitle={updateDocTitle} updateDocContent={updateDocContent} removeDoc={removeDoc} />
 			<FileDropzone setDocs={uploadDocs} />
 
 			<div className="mt-4 flex flex-col items-end justify-between gap-4 sm:flex-row sm:items-center">
@@ -280,7 +250,7 @@ function Post({
 								}
 							])
 						}}
-						className="min-w-[120px] max-w-[200px] flex-1"
+						className="max-w-[200px] min-w-[120px] flex-1"
 						variant={"secondary"}
 					>
 						Add a File
@@ -290,7 +260,7 @@ function Post({
 				<ButtonDropdown>
 					<span
 						className={clsx(
-							"w-full cursor-pointer rounded-br-none rounded-tr-none",
+							"w-full cursor-pointer rounded-tr-none rounded-br-none",
 							buttonVariants({
 								variant: "default"
 							})
@@ -300,32 +270,18 @@ function Post({
 						{isSubmitting ? <Spinner className="mr-2" /> : null}
 						Create Unlisted
 					</span>
-					<span
-						className={clsx("w-full cursor-pointer")}
-						onClick={() => onSubmit("private")}
-					>
+					<span className={clsx("w-full cursor-pointer")} onClick={() => onSubmit("private")}>
 						Create Private
 					</span>
-					<span
-						className={clsx("w-full cursor-pointer")}
-						onClick={() => onSubmit("public")}
-					>
+					<span className={clsx("w-full cursor-pointer")} onClick={() => onSubmit("public")}>
 						Create Public
 					</span>
-					<span
-						className={clsx("w-full cursor-pointer")}
-						onClick={() => onSubmit("protected")}
-					>
+					<span className={clsx("w-full cursor-pointer")} onClick={() => onSubmit("protected")}>
 						Create with Password
 					</span>
 				</ButtonDropdown>
 			</div>
-			<PasswordModal
-				creating={true}
-				isOpen={passwordModalVisible}
-				onClose={onClosePasswordModal}
-				onSubmit={submitPassword}
-			/>
+			<PasswordModal creating={true} isOpen={passwordModalVisible} onClose={onClosePasswordModal} onSubmit={submitPassword} />
 		</div>
 	)
 }

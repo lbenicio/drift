@@ -9,29 +9,13 @@ import { Button } from "@components/button"
 import { Calendar } from "@components/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@components/popover"
 
-export function DatePicker({
-	expiresAt,
-	setExpiresAt
-}: {
-	expiresAt?: Date
-	setExpiresAt: React.Dispatch<React.SetStateAction<Date | undefined>>
-}) {
+export function DatePicker({ expiresAt, setExpiresAt }: { expiresAt?: Date; setExpiresAt: React.Dispatch<React.SetStateAction<Date | undefined>> }) {
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button
-					variant={"outline"}
-					className={cn(
-						"w-[280px] justify-start text-left font-normal",
-						!expiresAt && "text-muted-foreground"
-					)}
-				>
+				<Button variant={"outline"} className={cn("w-[280px] justify-start text-left font-normal", !expiresAt && "text-muted-foreground")}>
 					<CalendarIcon className="mr-2 h-4 w-4" />
-					{expiresAt ? (
-						format(expiresAt, "PPP")
-					) : (
-						<span>Won&apos;t expire</span>
-					)}
+					{expiresAt ? format(expiresAt, "PPP") : <span>Won&apos;t expire</span>}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0">

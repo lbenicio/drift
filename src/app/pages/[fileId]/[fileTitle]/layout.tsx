@@ -6,11 +6,7 @@ import ThemeProvider from "./theme-provider"
 
 const inter = Inter({ subsets: ["latin"], variable: "--inter-font" })
 
-export default async function RootLayout({
-	children
-}: {
-	children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		// suppressHydrationWarning is required because of next-themes
 		<html lang="en" className={inter.variable} suppressHydrationWarning>

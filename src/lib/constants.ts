@@ -2,9 +2,7 @@ import { ServerPost } from "./server/prisma"
 
 // Visibilties for the webpages feature
 export const ALLOWED_VISIBILITIES_FOR_WEBPAGE = ["public", "unlisted"]
-export function isAllowedVisibilityForWebpage(
-	visibility: ServerPost["visibility"]
-) {
+export function isAllowedVisibilityForWebpage(visibility: ServerPost["visibility"]) {
 	return ALLOWED_VISIBILITIES_FOR_WEBPAGE.includes(visibility)
 }
 export const DEFAULT_THEME = "dark"
@@ -129,12 +127,4 @@ export const codeFileExtensions = [
 	"fish"
 ]
 
-export const allowedFileExtensions = [
-	"csv",
-	"markdown",
-	"md",
-	"txt",
-	"webmanifest",
-	"log",
-	...codeFileExtensions
-]
+export const allowedFileExtensions = ["csv", "markdown", "md", "txt", "webmanifest", "log", ...codeFileExtensions]

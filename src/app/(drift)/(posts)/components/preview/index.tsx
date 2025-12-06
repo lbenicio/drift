@@ -14,12 +14,7 @@ type Props = {
 	children?: string
 }
 
-function MarkdownPreview({
-	height = 500,
-	fileId,
-	title,
-	children: rawContent
-}: Props) {
+function MarkdownPreview({ height = 500, fileId, title, children: rawContent }: Props) {
 	const [preview, setPreview] = useState<string>(rawContent || "")
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	useEffect(() => {
@@ -32,7 +27,7 @@ function MarkdownPreview({
 				: JSON.stringify({
 						title: title || "",
 						content: rawContent
-				  })
+					})
 
 			const resp = await fetchWithUser(path, {
 				method: method,
@@ -52,26 +47,12 @@ function MarkdownPreview({
 		fetchHTML()
 	}, [rawContent, fileId, title])
 
-	return (
-		<>
-			{isLoading ? (
-				<Spinner />
-			) : (
-				<StaticPreview height={height}>{preview}</StaticPreview>
-			)}
-		</>
-	)
+	return <>{isLoading ? <Spinner /> : <StaticPreview height={height}>{preview}</StaticPreview>}</>
 }
 
 export default memo(MarkdownPreview)
 
-export function StaticPreview({
-	children,
-	height = 500
-}: {
-	children: string
-	height: string | number
-}) {
+export function StaticPreview({ children, height = 500 }: { children: string; height: string | number }) {
 	return (
 		<article
 			className={styles.markdownPreview}
@@ -83,13 +64,7 @@ export function StaticPreview({
 	)
 }
 
-export function StaticPreviewSkeleton({
-	children,
-	height = 500
-}: {
-	children: string
-	height: string | number
-}) {
+export function StaticPreviewSkeleton({ children, height = 500 }: { children: string; height: string | number }) {
 	return (
 		<div
 			className={clsx(styles.markdownPreview)}

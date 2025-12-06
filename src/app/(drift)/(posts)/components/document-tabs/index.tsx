@@ -1,13 +1,7 @@
 "use client"
 
 import FormattingIcons from "src/app/(drift)/(posts)/new/components/edit-document-list/edit-document/formatting-icons"
-import {
-	ChangeEvent,
-	ClipboardEvent,
-	ComponentProps,
-	useRef,
-	useState
-} from "react"
+import { ChangeEvent, ClipboardEvent, ComponentProps, useRef, useState } from "react"
 import TextareaMarkdown, { TextareaMarkdownRef } from "textarea-markdown-editor"
 import Preview, { StaticPreview } from "../preview"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/tabs"
@@ -23,16 +17,7 @@ type Props = ComponentProps<typeof Tabs> & {
 	children: string
 }
 
-export default function DocumentTabs({
-	isEditing,
-	defaultTab,
-	handleOnContentChange,
-	onPaste,
-	title,
-	staticPreview: preview,
-	children: rawContent,
-	...props
-}: Props) {
+export default function DocumentTabs({ isEditing, defaultTab, handleOnContentChange, onPaste, title, staticPreview: preview, children: rawContent, ...props }: Props) {
 	const codeEditorRef = useRef<TextareaMarkdownRef>(null)
 	const [activeTab, setActiveTab] = useState<"preview" | "edit">(defaultTab)
 	const handleTabChange = (newTab: string) => {
@@ -47,18 +32,9 @@ export default function DocumentTabs({
 			<TabsList className="flex flex-col items-start justify-start sm:flex-row sm:items-center sm:justify-between">
 				<div>
 					<TabsTrigger value="edit">{isEditing ? "Edit" : "Raw"}</TabsTrigger>
-					<TabsTrigger value="preview">
-						{isEditing ? "Preview" : "Rendered"}
-					</TabsTrigger>
+					<TabsTrigger value="preview">{isEditing ? "Preview" : "Rendered"}</TabsTrigger>
 				</div>
-				{isEditing && (
-					<FormattingIcons
-						textareaRef={codeEditorRef}
-						className={`ml-auto ${
-							activeTab === "preview" ? "hidden" : "hidden sm:block"
-						}`}
-					/>
-				)}
+				{isEditing && <FormattingIcons textareaRef={codeEditorRef} className={`ml-auto ${activeTab === "preview" ? "hidden" : "hidden sm:block"}`} />}
 			</TabsList>
 			<TabsContent value="edit">
 				<div
@@ -68,14 +44,7 @@ export default function DocumentTabs({
 						flexDirection: "column"
 					}}
 				>
-					<FormattingIcons
-						textareaRef={codeEditorRef}
-						className={`ml-auto ${
-							activeTab === "preview"
-								? "hidden"
-								: "block text-muted-foreground sm:hidden"
-						}`}
-					/>
+					<FormattingIcons textareaRef={codeEditorRef} className={`ml-auto ${activeTab === "preview" ? "hidden" : "text-muted-foreground block sm:hidden"}`} />
 					<TextareaMarkdown.Wrapper ref={codeEditorRef}>
 						<Textarea
 							readOnly={!isEditing}

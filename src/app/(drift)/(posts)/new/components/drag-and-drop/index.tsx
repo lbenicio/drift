@@ -1,11 +1,7 @@
 import { useDropzone } from "react-dropzone"
 import styles from "./drag-and-drop.module.css"
 import generateUUID from "@lib/generate-uuid"
-import {
-	allowedFileTypes,
-	allowedFileNames,
-	allowedFileExtensions
-} from "@lib/constants"
+import { allowedFileTypes, allowedFileNames, allowedFileExtensions } from "@lib/constants"
 import byteToMB from "@lib/byte-to-mb"
 import type { Document } from "../new"
 import { useToasts } from "@components/toasts"
@@ -18,10 +14,8 @@ function FileDropzone({ setDocs }: { setDocs: (docs: Document[]) => void }) {
 				return new Promise<Document>((resolve) => {
 					const reader = new FileReader()
 
-					reader.onabort = () =>
-						setToast({ message: "File reading was aborted", type: "error" })
-					reader.onerror = () =>
-						setToast({ message: "File reading failed", type: "error" })
+					reader.onabort = () => setToast({ message: "File reading was aborted", type: "error" })
+					reader.onerror = () => setToast({ message: "File reading failed", type: "error" })
 					reader.onload = () => {
 						const content = reader.result as string
 						resolve({
@@ -44,19 +38,12 @@ function FileDropzone({ setDocs }: { setDocs: (docs: Document[]) => void }) {
 		if (file.size > maxFileSize) {
 			return {
 				code: "file-too-big",
-				message:
-					"File is too big. Maximum file size is " +
-					byteToMB(maxFileSize) +
-					" MB."
+				message: "File is too big. Maximum file size is " + byteToMB(maxFileSize) + " MB."
 			}
 		}
 
 		// We initially try to use the browser provided mime type, and then fall back to file names and finally extensions
-		if (
-			allowedFileTypes.includes(file.type) ||
-			allowedFileNames.includes(file.name) ||
-			allowedFileExtensions.includes(file.name?.split(".").pop() || "")
-		) {
+		if (allowedFileTypes.includes(file.type) || allowedFileNames.includes(file.name) || allowedFileExtensions.includes(file.name?.split(".").pop() || "")) {
 			return null
 		} else {
 			return {
@@ -66,8 +53,7 @@ function FileDropzone({ setDocs }: { setDocs: (docs: Document[]) => void }) {
 		}
 	}
 
-	const { getRootProps, getInputProps, isDragActive, fileRejections } =
-		useDropzone({ onDrop, validator })
+	const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({ onDrop, validator })
 
 	const fileRejectionItems = fileRejections.map(({ file, errors }) => (
 		<li key={file.name}>
@@ -84,11 +70,7 @@ function FileDropzone({ setDocs }: { setDocs: (docs: Document[]) => void }) {
 		<div className={styles.container}>
 			<div {...getRootProps()}>
 				<input {...getInputProps()} />
-				{!isDragActive && (
-					<p className="cursor-pointer select-none rounded-md border-2 border-dashed p-4 text-sm text-muted-foreground">
-						Drag and drop files here, or click to select
-					</p>
-				)}
+				{!isDragActive && <p className="text-muted-foreground cursor-pointer rounded-md border-2 border-dashed p-4 text-sm select-none">Drag and drop files here, or click to select</p>}
 				{isDragActive && <p>Release to drop the files here</p>}
 			</div>
 			{fileRejections.length > 0 && (

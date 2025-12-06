@@ -9,9 +9,7 @@ export default withAuth(
 		const token = await getToken({ req })
 
 		const isAuthed = !!token
-		const isAuthPage =
-			req.nextUrl.pathname.startsWith("/signup") ||
-			req.nextUrl.pathname.startsWith("/signin")
+		const isAuthPage = req.nextUrl.pathname.startsWith("/signup") || req.nextUrl.pathname.startsWith("/signin")
 
 		const isPageRequireAuth = PAGES_REQUIRE_AUTH.includes(req.nextUrl.pathname)
 

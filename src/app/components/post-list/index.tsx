@@ -23,14 +23,7 @@ type Props = {
 	userId?: string
 }
 
-const PostList = ({
-	initialPosts,
-	hideSearch,
-	hideActions,
-	isOwner,
-	skeleton,
-	userId
-}: Props) => {
+const PostList = ({ initialPosts, hideSearch, hideActions, isOwner, skeleton, userId }: Props) => {
 	const [searchValue, setSearchValue] = useState("")
 	const [searching, setSearching] = useState(false)
 	const [posts, setPosts] = useState<PostWithFiles[]>(initialPosts)
@@ -50,15 +43,12 @@ const PostList = ({
 
 			setSearching(true)
 			async function fetchPosts() {
-				const res = await fetchWithUser(
-					`/api/post/search?q=${encodeURIComponent(query)}`,
-					{
-						method: "GET",
-						headers: {
-							"Content-Type": "application/json"
-						}
+				const res = await fetchWithUser(`/api/post/search?q=${encodeURIComponent(query)}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
 					}
-				)
+				})
 				const json = (await res.json()) as PostWithFiles[]
 				setPosts(json)
 				setSearching(false)
@@ -103,14 +93,7 @@ const PostList = ({
 		<Stack className={styles.container} alignItems="center">
 			{!hideSearch && (
 				<div className={styles.searchContainer}>
-					<Input
-						placeholder="Search..."
-						onChange={onSearchChange}
-						disabled={!posts || posts.length === 0}
-						style={{ maxWidth: 300 }}
-						aria-label="Search"
-						value={searchValue}
-					/>
+					<Input placeholder="Search..." onChange={onSearchChange} disabled={!posts || posts.length === 0} style={{ maxWidth: 300 }} aria-label="Search" value={searchValue} />
 				</div>
 			)}
 			{!posts && <p style={{ color: "var(--warning)" }}>Failed to load.</p>}
@@ -123,15 +106,7 @@ const PostList = ({
 			{!showSkeleton && posts && posts.length > 0 ? (
 				<ul>
 					{posts.map((post) => {
-						return (
-							<ListItem
-								deletePost={deletePost(post.id)}
-								post={post}
-								key={post.id}
-								hideActions={hideActions}
-								isOwner={isOwner}
-							/>
-						)
+						return <ListItem deletePost={deletePost(post.id)} post={post} key={post.id} hideActions={hideActions} isOwner={isOwner} />
 					})}
 				</ul>
 			) : null}

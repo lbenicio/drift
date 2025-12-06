@@ -11,11 +11,7 @@ type PageSeoProps = {
 
 // TODO: remove once fully migrated to new metadata API
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const PageSeo = ({
-	title: pageTitle,
-	description = "A self-hostable clone of GitHub Gist",
-	isPrivate = false
-}: PageSeoProps) => {
+const PageSeo = ({ title: pageTitle, description = "A self-hostable clone of GitHub Gist", isPrivate = false }: PageSeoProps) => {
 	const title = `Drift${pageTitle ? ` - ${pageTitle}` : ""}`
 	return (
 		<>
@@ -34,16 +30,8 @@ const ThemeAndIcons = () => (
 		<link />
 		<meta name="apple-mobile-web-app-title" content="Drift" />
 		<meta name="application-name" content="Drift" />
-		<meta
-			name="theme-color"
-			content="#ffffff"
-			media="(prefers-color-scheme: light)"
-		/>
-		<meta
-			name="theme-color"
-			content="#000"
-			media="(prefers-color-scheme: dark)"
-		/>
+		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)" />
 	</>
 )
 
@@ -110,18 +98,7 @@ export function getMetadata({
 			description,
 			...overrides?.openGraph
 		}),
-		keywords: undefinedIfHidden([
-			"gist",
-			"github",
-			"drift",
-			"next.js",
-			"self-hosted",
-			"paste",
-			"pastebin",
-			"clone",
-			"code",
-			"snippet"
-		]),
+		keywords: undefinedIfHidden(["gist", "github", "drift", "next.js", "self-hosted", "paste", "pastebin", "clone", "code", "snippet"]),
 		...overrides
 	}
 }

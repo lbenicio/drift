@@ -7,13 +7,7 @@ interface StackProps {
 	style?: CSSProperties
 	direction?: "row" | "column"
 	alignItems?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline"
-	justifyContent?:
-		| "center"
-		| "flex-start"
-		| "flex-end"
-		| "space-between"
-		| "space-around"
-		| "space-evenly"
+	justifyContent?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "space-evenly"
 	width?: string
 }
 

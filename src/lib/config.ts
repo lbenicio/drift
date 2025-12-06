@@ -30,16 +30,11 @@ export const config = (env: Environment): Config => {
 	}
 
 	// TODO: improve `key` type
-	const throwIfUndefined = (
-		key: keyof Environment,
-		justWarn?: boolean
-	): string => {
+	const throwIfUndefined = (key: keyof Environment, justWarn?: boolean): string => {
 		const value = env[key]
 		if (value === undefined) {
 			if (justWarn) {
-				console.warn(
-					`${key} is missing, but is expected. \n This can occur when building when a database is not yet available.`
-				)
+				console.warn(`${key} is missing, but is expected. \n This can occur when building when a database is not yet available.`)
 				return ""
 			} else {
 				throw new Error(`Missing environment variable: ${key}`)
@@ -82,9 +77,7 @@ export const config = (env: Environment): Config => {
 			env.WELCOME_CONTENT ??
 			"## Drift is a self-hostable clone of GitHub Gist.\n\nIt is a simple way to save and share code and text snippets, with support for the following:\n\n- Render GitHub Extended Markdown\n- User authentication\n- Private, public, and password protected posts\n- Syntax highlighting and language detection\n- Drag-and-drop file uploading \n\n You can find the source code and sponsor development on [GitHub](https://github.com/MaxLeiter/drift).",
 		welcome_title: env.WELCOME_TITLE ?? "Drift",
-		url:
-			throwIfUndefined("DRIFT_URL", true) ||
-			`https://${throwIfUndefined("VERCEL_URL")}`,
+		url: throwIfUndefined("DRIFT_URL", true) || `https://${throwIfUndefined("VERCEL_URL")}`,
 		github_client_id: env.GITHUB_CLIENT_ID ?? "",
 		github_client_secret: env.GITHUB_CLIENT_SECRET ?? "",
 		keycloak_client_id: env.KEYCLOAK_ID ?? "",

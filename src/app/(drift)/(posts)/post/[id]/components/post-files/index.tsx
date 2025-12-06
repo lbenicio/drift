@@ -42,13 +42,7 @@ const PostFiles = ({ post: initialPost }: Props) => {
 	const isProtected = post?.visibility === "protected"
 	const hasFetched = post?.files !== undefined
 	if (isProtected && !hasFetched) {
-		return (
-			<PasswordModalWrapper
-				authorId={post.authorId}
-				setPost={setPost}
-				postId={post.id}
-			/>
-		)
+		return <PasswordModalWrapper authorId={post.authorId} setPost={setPost} postId={post.id} />
 	}
 
 	return (
@@ -60,13 +54,7 @@ const PostFiles = ({ post: initialPost }: Props) => {
 			}}
 		>
 			{post?.files?.map((file) => (
-				<DocumentComponent
-					skeleton={false}
-					key={post.id}
-					initialTab={"preview"}
-					file={file}
-					post={post}
-				/>
+				<DocumentComponent skeleton={false} key={post.id} initialTab={"preview"} file={file} post={post} />
 			))}
 		</main>
 	)

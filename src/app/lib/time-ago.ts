@@ -29,9 +29,7 @@ const getDuration = (timeAgoInSeconds: number) => {
 }
 
 const timeAgo = (date: Date) => {
-	const timeAgoInSeconds = Math.floor(
-		(new Date().getTime() - new Date(date).getTime()) / 1000
-	)
+	const timeAgoInSeconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000)
 	const { interval, epoch } = getDuration(timeAgoInSeconds)
 	const suffix = interval === 1 ? "" : "s"
 
@@ -39,9 +37,7 @@ const timeAgo = (date: Date) => {
 }
 
 const timeUntil = (date: Date) => {
-	const timeUntilInSeconds = Math.floor(
-		(new Date(date).getTime() - new Date().getTime()) / 1000
-	)
+	const timeUntilInSeconds = Math.floor((new Date(date).getTime() - new Date().getTime()) / 1000)
 	const { interval, epoch } = getDuration(timeUntilInSeconds)
 	const suffix = interval === 1 ? "" : "s"
 

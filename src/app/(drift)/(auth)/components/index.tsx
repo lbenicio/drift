@@ -66,9 +66,7 @@ function Auth({
 		setPassword(event.target.value)
 	}
 
-	function handleChangeServerPassword(
-		event: React.ChangeEvent<HTMLInputElement>
-	) {
+	function handleChangeServerPassword(event: React.ChangeEvent<HTMLInputElement>) {
 		setServerPassword(event.target.value)
 	}
 
@@ -84,46 +82,16 @@ function Auth({
 						{requiresServerPassword ? (
 							<>
 								{" "}
-								<Note type="info">
-									The server administrator has set a password for this server.
-								</Note>
-								<Input
-									type="password"
-									id="server-password"
-									value={serverPassword}
-									onChange={handleChangeServerPassword}
-									placeholder="Server Password"
-									required={true}
-									aria-label="Server Password"
-								/>
+								<Note type="info">The server administrator has set a password for this server.</Note>
+								<Input type="password" id="server-password" value={serverPassword} onChange={handleChangeServerPassword} placeholder="Server Password" required={true} aria-label="Server Password" />
 								<hr style={{ width: "100%" }} />
 							</>
 						) : null}
 
 						{credentialAuth ? (
 							<>
-								<Input
-									type="text"
-									id="username"
-									value={username}
-									onChange={handleChangeUsername}
-									placeholder="Username"
-									required={true}
-									minLength={3}
-									width="100%"
-									aria-label="Username"
-								/>
-								<Input
-									type="password"
-									id="password"
-									value={password}
-									onChange={handleChangePassword}
-									placeholder="Password"
-									required={true}
-									minLength={6}
-									width="100%"
-									aria-label="Password"
-								/>
+								<Input type="text" id="username" value={username} onChange={handleChangeUsername} placeholder="Username" required={true} minLength={3} width="100%" aria-label="Username" />
+								<Input type="password" id="password" value={password} onChange={handleChangePassword} placeholder="Password" required={true} minLength={6} width="100%" aria-label="Password" />
 								<Button type="submit" loading={submitting}>
 									Sign {signText}
 								</Button>
@@ -133,9 +101,7 @@ function Auth({
 						{authProviders?.length ? (
 							<>
 								<hr className="w-full" />
-								<p className="mt-2 p-0 text-center">
-									Or sign {signText.toLowerCase()} with one of the following
-								</p>
+								<p className="mt-2 p-0 text-center">Or sign {signText.toLowerCase()} with one of the following</p>
 								{authProviders?.map((provider) => {
 									return provider.enabled ? (
 										<Button
@@ -151,8 +117,7 @@ function Auth({
 											}}
 											className="my-2 flex w-full max-w-[250px] items-center justify-center"
 										>
-											{getProviderIcon(provider.id)} Sign{" "}
-											{signText.toLowerCase()} with {provider.public_name}
+											{getProviderIcon(provider.id)} Sign {signText.toLowerCase()} with {provider.public_name}
 										</Button>
 									) : null
 								})}

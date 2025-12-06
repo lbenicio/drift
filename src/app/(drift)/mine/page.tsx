@@ -23,12 +23,7 @@ export default async function Mine() {
 			<PageWrapper>
 				<ErrorBoundary>
 					<Suspense fallback={<PostList skeleton={true} initialPosts={[]} />}>
-						<PostList
-							userId={userId}
-							initialPosts={posts}
-							isOwner={true}
-							hideSearch={false}
-						/>
+						<PostList userId={userId} initialPosts={posts} isOwner={true} hideSearch={false} />
 					</Suspense>
 				</ErrorBoundary>
 			</PageWrapper>

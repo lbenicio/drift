@@ -1,10 +1,6 @@
 import { Card, CardContent } from "@components/card"
 import { getWelcomeContent } from "src/pages/api/welcome"
-import {
-	getAllPosts,
-	serverPostToClientPost,
-	ServerPostWithFilesAndAuthor
-} from "@lib/server/prisma"
+import { getAllPosts, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma"
 import PostList, { NoPostsFound } from "@components/post-list"
 import { cache, Suspense } from "react"
 import ErrorBoundary from "@components/error/fallback"
@@ -24,11 +20,7 @@ export default async function Page() {
 			<WelcomePost />
 			<h2 className="mt-4 text-2xl font-bold">Recent Public Posts</h2>
 			<ErrorBoundary>
-				<Suspense
-					fallback={
-						<PostList skeleton hideActions hideSearch initialPosts={[]} />
-					}
-				>
+				<Suspense fallback={<PostList skeleton hideActions hideSearch initialPosts={[]} />}>
 					{/* @ts-expect-error because of async RSC */}
 					<PublicPostList />
 				</Suspense>
@@ -42,12 +34,7 @@ async function WelcomePost() {
 	return (
 		<Card className="w-full">
 			<CardContent>
-				<DocumentTabs
-					defaultTab="preview"
-					isEditing={false}
-					staticPreview={rendered as string}
-					title={title}
-				>
+				<DocumentTabs defaultTab="preview" isEditing={false} staticPreview={rendered as string} title={title}>
 					{content}
 				</DocumentTabs>
 			</CardContent>

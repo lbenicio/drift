@@ -1,10 +1,6 @@
 import VisibilityControl from "@components/badges/visibility-control"
 import { getMetadata } from "src/app/lib/metadata"
-import {
-	PostWithFilesAndAuthor,
-	serverPostToClientPost,
-	ServerPostWithFilesAndAuthor
-} from "@lib/server/prisma"
+import { PostWithFilesAndAuthor, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma"
 import PostFiles from "./components/post-files"
 import { getPost } from "./get-post"
 
@@ -21,12 +17,8 @@ export default async function PostPage({
 	return (
 		<>
 			<PostFiles post={clientPost} />
-			<div className="mx-auto mb-4 mt-4">
-				<VisibilityControl
-					authorId={post.authorId}
-					postId={post.id}
-					visibility={post.visibility}
-				/>
+			<div className="mx-auto mt-4 mb-4">
+				<VisibilityControl authorId={post.authorId} postId={post.id} visibility={post.visibility} />
 			</div>
 		</>
 	)

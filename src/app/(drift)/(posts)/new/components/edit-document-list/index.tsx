@@ -25,17 +25,7 @@ function DocumentList({
 	return (
 		<>
 			{docs.map(({ content, id, title }, i) => {
-				return (
-					<DocumentComponent
-						onPaste={onPaste}
-						key={id}
-						remove={removeDoc(i)}
-						setTitle={updateDocTitle(i)}
-						handleOnContentChange={handleOnChange(i)}
-						content={content}
-						title={title}
-					/>
-				)
+				return <DocumentComponent onPaste={onPaste} key={id} remove={removeDoc(i)} setTitle={updateDocTitle(i)} handleOnContentChange={handleOnChange(i)} content={content} title={title} />
 			})}
 		</>
 	)

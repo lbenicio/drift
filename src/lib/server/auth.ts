@@ -6,11 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "@lib/server/prisma"
 import config from "@lib/config"
 import * as crypto from "crypto"
-import {
-	isCredentialEnabled,
-	isGithubEnabled,
-	isKeycloakEnabled
-} from "./auth-props"
+import { isCredentialEnabled, isGithubEnabled, isKeycloakEnabled } from "./auth-props"
 
 const credentialsOptions = () => {
 	const options: Record<string, unknown> = {
@@ -57,11 +53,7 @@ const providers = () => {
 			token: {
 				async request(ctx) {
 					const { client, provider, params, checks } = ctx
-					const tokens = await client.callback(
-						provider.callbackUrl,
-						params,
-						checks
-					)
+					const tokens = await client.callback(provider.callbackUrl, params, checks)
 					if ("refresh_expires_in" in tokens) {
 						tokens.refresh_token_expires_in = tokens.refresh_expires_in
 						delete tokens.refresh_expires_in
@@ -122,13 +114,7 @@ const providers = () => {
 						.digest("hex")
 
 					if (credentials.signingIn === "true") {
-						if (
-							user?.password &&
-							crypto.timingSafeEqual(
-								Buffer.from(user.password),
-								Buffer.from(hashedPassword)
-							)
-						) {
+						if (user?.password && crypto.timingSafeEqual(Buffer.from(user.password), Buffer.from(hashedPassword))) {
 							return user
 						} else {
 							throw new Error("Incorrect username or password")
@@ -139,10 +125,7 @@ const providers = () => {
 								throw new Error("Missing registration password")
 							}
 
-							if (
-								credentials.registration_password !==
-								config.registration_password
-							) {
+							if (credentials.registration_password !== config.registration_password) {
 								throw new Error("Incorrect registration password")
 							}
 						}
@@ -286,9 +269,7 @@ export const authOptions: NextAuthOptions = {
 					return baseUrl
 				}
 
-				let signoutWithRedirectUrl = `${ssoLogoutUrl}?post_logout_redirect_uri=${encodeURIComponent(
-					baseUrl
-				)}`
+				let signoutWithRedirectUrl = `${ssoLogoutUrl}?post_logout_redirect_uri=${encodeURIComponent(baseUrl)}`
 
 				if (idToken) {
 					signoutWithRedirectUrl += `&id_token_hint=${idToken}`

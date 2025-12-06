@@ -118,10 +118,7 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse<unknown>) {
 	})
 }
 
-async function handleDelete(
-	req: NextApiRequest,
-	res: NextApiResponse<unknown>
-) {
+async function handleDelete(req: NextApiRequest, res: NextApiResponse<unknown>) {
 	const id = parseQueryParam(req.query.id)
 
 	if (!id) {

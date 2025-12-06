@@ -28,13 +28,7 @@ export default function Header() {
 		<header className="mt-4 flex h-16 items-center justify-start md:justify-between">
 			<span className="hidden items-center md:flex">
 				<Link href="/" className="mr-4 flex items-center">
-					<Image
-						src={"/assets/logo.svg"}
-						width={32}
-						height={32}
-						alt=""
-						priority
-					/>
+					<Image src={"/assets/logo.svg"} width={32} height={32} alt="" priority />
 					<span className="bg-transparent pl-4 text-lg font-bold">Drift</span>
 				</Link>
 				<nav className="flex space-x-4 lg:space-x-6">
@@ -52,12 +46,8 @@ export default function Header() {
 						{isAdmin && <NavLink href="/admin">Admin</NavLink>}
 						{isAuthenticated !== undefined && (
 							<>
-								{isAuthenticated === true && (
-									<NavLink href="/signout">Sign Out</NavLink>
-								)}
-								{isAuthenticated === false && (
-									<NavLink href="/signin">Sign In</NavLink>
-								)}
+								{isAuthenticated === true && <NavLink href="/signout">Sign Out</NavLink>}
+								{isAuthenticated === false && <NavLink href="/signin">Sign In</NavLink>}
 							</>
 						)}
 					</ul>
@@ -70,15 +60,11 @@ export default function Header() {
 				<FadeIn>
 					<button
 						aria-hidden
-						className="ml-4 flex h-8 w-8 cursor-pointer items-center justify-center font-medium text-muted-foreground transition-colors hover:text-primary md:ml-0"
+						className="text-muted-foreground hover:text-primary ml-4 flex h-8 w-8 cursor-pointer items-center justify-center font-medium transition-colors md:ml-0"
 						onClick={toggleTheme}
 						title="Toggle theme"
 					>
-						{resolvedTheme === "dark" ? (
-							<Sun className="h-[16px] w-[16px]" />
-						) : (
-							<Moon className="h-[16px] w-[16px]" />
-						)}
+						{resolvedTheme === "dark" ? <Sun className="h-[16px] w-[16px]" /> : <Moon className="h-[16px] w-[16px]" />}
 					</button>
 				</FadeIn>
 			)}
@@ -93,8 +79,7 @@ type NavLinkProps = PropsWithChildren<{
 }>
 
 function NavLink({ href, disabled, children }: NavLinkProps) {
-	const baseClasses =
-		"text-sm text-muted-foreground font-medium transition-colors hover:text-primary"
+	const baseClasses = "text-sm text-muted-foreground font-medium transition-colors hover:text-primary"
 	const activeClasses = "text-primary border-primary"
 	const disabledClasses = "text-gray-600 hover:text-gray-400 cursor-not-allowed"
 
@@ -106,14 +91,7 @@ function NavLink({ href, disabled, children }: NavLinkProps) {
 		(!activeSegment && href === "/home")
 
 	return (
-		<Link
-			href={href}
-			className={cn(
-				baseClasses,
-				isActive && activeClasses,
-				disabled && disabledClasses
-			)}
-		>
+		<Link href={href} className={cn(baseClasses, isActive && activeClasses, disabled && disabledClasses)}>
 			{children}
 		</Link>
 	)

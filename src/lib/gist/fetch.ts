@@ -5,9 +5,7 @@ import { Gist, GistFile } from "./types"
 
 async function fetchHelper(response: Response): Promise<Response> {
 	if (!response.ok) {
-		const isJson = response.headers
-			.get("content-type")
-			?.includes("application/json")
+		const isJson = response.headers.get("content-type")?.includes("application/json")
 		const err = await (isJson ? response.json() : response.text())
 		throw new Error(err as string)
 	}
@@ -56,15 +54,12 @@ export function responseToGist(response: GistResponse): Gist {
 }
 
 export async function getGist(id: string): Promise<Gist> {
-	const response: GistResponse = await fetch(
-		`https://api.github.com/gists/${id}`,
-		{
-			method: "GET",
-			headers: {
-				Accept: "application/vnd.github.v3+json"
-			}
+	const response: GistResponse = await fetch(`https://api.github.com/gists/${id}`, {
+		method: "GET",
+		headers: {
+			Accept: "application/vnd.github.v3+json"
 		}
-	)
+	})
 		.then(fetchHelper)
 		.then((res) => res.json())
 

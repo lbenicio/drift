@@ -19,16 +19,13 @@ export default async function GET(req: NextRequest) {
 
 	if (slug === "requires-passcode") {
 		// return res.json({ requiresPasscode: await getRequiresPasscode() })
-		return new Response(
-			JSON.stringify({ requiresPasscode: await getRequiresPasscode() }),
-			{
-				status: 200,
-				statusText: "OK",
-				headers: {
-					"Content-Type": "application/json"
-				}
+		return new Response(JSON.stringify({ requiresPasscode: await getRequiresPasscode() }), {
+			status: 200,
+			statusText: "OK",
+			headers: {
+				"Content-Type": "application/json"
 			}
-		)
+		})
 	}
 
 	return new Response(JSON.stringify({ error: "Not found" }), {

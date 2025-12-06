@@ -12,14 +12,7 @@ type props = {
 function Description({ onChange, description }: props) {
 	return (
 		<div className={clsx(styles.description, "pb-4")}>
-			<Input
-				value={description || ""}
-				onChange={onChange}
-				label="Description"
-				maxLength={256}
-				width="100%"
-				placeholder="An optional description"
-			/>
+			<Input value={description || ""} onChange={onChange} label="Description" maxLength={256} width="100%" placeholder="An optional description" />
 		</div>
 	)
 }

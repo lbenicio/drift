@@ -3,17 +3,11 @@ import * as crypto from "crypto"
 import { getHtmlFromFile } from "@lib/server/get-html-from-drift-file"
 import { prisma, ServerPost } from "@lib/server/prisma"
 
-export type AdditionalPostInformation = Pick<
-	ServerPost,
-	"visibility" | "password" | "expiresAt"
-> & {
+export type AdditionalPostInformation = Pick<ServerPost, "visibility" | "password" | "expiresAt"> & {
 	userId: string
 }
 
-export async function createPostFromGist(
-	{ userId, visibility, password, expiresAt }: AdditionalPostInformation,
-	gist: Gist
-): Promise<ServerPost> {
+export async function createPostFromGist({ userId, visibility, password, expiresAt }: AdditionalPostInformation, gist: Gist): Promise<ServerPost> {
 	const files = Object.values(gist.files)
 	const [title, description] = gist.description.split("\n", 1)
 
@@ -47,11 +41,7 @@ export async function createPostFromGist(
 							return {
 								title: file.filename,
 								content: Buffer.from(content, "utf-8"),
-								sha: crypto
-									.createHash("sha256")
-									.update(content)
-									.digest("hex")
-									.toString(),
+								sha: crypto.createHash("sha256").update(content).digest("hex").toString(),
 								html: Buffer.from(html as string, "utf-8"),
 								userId: userId
 							}
