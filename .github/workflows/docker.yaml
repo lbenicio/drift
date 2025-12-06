@@ -1,14 +1,8 @@
 name: Docker Build & Push
 
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - "v*"
-  pull_request:
-    branches:
-      - main
+  release:
+    types: [published]
   workflow_dispatch:
 
 env:
@@ -17,13 +11,17 @@ env:
 
 jobs:
   build:
-    name: Build & Push
+    name: Build (${{ matrix.platform }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
     permissions:
       contents: read
       packages: write
-      attestations: write
-      id-token: write
 
     steps:
       - name: Checkout repository
@@ -36,7 +34,72 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to GitHub Container Registry
-        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.platform }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
+          build-args: |
+            NODE_ENV=production
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    name: Merge & Push Manifest
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Download amd64 digest
+        uses: actions/download-artifact@v4
+        with:
+          name: digests-amd64
+          path: /tmp/digests
+
+      - name: Download arm64 digest
+        uses: actions/download-artifact@v4
+        with:
+          name: digests-arm64
+          path: /tmp/digests
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -49,83 +112,98 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # Set latest tag for default branch
-            type=raw,value=latest,enable={{is_default_branch}}
-            # Tag with branch name
-            type=ref,event=branch
-            # Tag with PR number
-            type=ref,event=pr
-            # Tag with semver (v1.0.0 -> 1.0.0, latest, 1.0, 1)
+            # Set latest tag for stable releases
+            type=raw,value=latest,enable=${{ github.event.release.prerelease != true }}
+            # Tag with semver (v1.0.0 -> 1.0.0, 1.0, 1)
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             # Tag with commit SHA
             type=sha,prefix=sha-
 
-      - name: Build and push Docker image
+      - name: Create and push manifest
         id: push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            NODE_ENV=production
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
+
+          # Get the manifest digest
+          DIGEST=$(docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }} --format '{{.Manifest.Digest}}')
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Generate artifact attestation
-        if: github.event_name != 'pull_request'
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
+  summary:
+    name: Generate Summary
+    runs-on: ubuntu-latest
+    needs: [build, merge]
+    if: always()
+    steps:
       - name: Generate Summary
-        if: always()
         run: |
-          if [[ "${{ job.status }}" == "success" ]]; then
-            STATUS_EMOJI="✅"
-            STATUS_TEXT="Successfully built and pushed"
-          else
-            STATUS_EMOJI="❌"
-            STATUS_TEXT="Build failed"
-          fi
+          # Helper function to get status emoji
+          get_status() {
+            case "$1" in
+              success) echo "✅" ;;
+              failure) echo "❌" ;;
+              cancelled) echo "⚠️" ;;
+              skipped) echo "⏭️" ;;
+              *) echo "❓" ;;
+            esac
+          }
 
-          # Get tags as a list
-          TAGS="${{ steps.meta.outputs.tags }}"
-          TAGS_LIST=$(echo "$TAGS" | tr ',' '\n' | sed 's/^/- `/' | sed 's/$/`/')
+          BUILD_STATUS="${{ needs.build.result }}"
+          MERGE_STATUS="${{ needs.merge.result }}"
+
+          BUILD_EMOJI=$(get_status "$BUILD_STATUS")
+          MERGE_EMOJI=$(get_status "$MERGE_STATUS")
+
+          # Determine overall status
+          if [[ "$BUILD_STATUS" == "success" && "$MERGE_STATUS" == "success" ]]; then
+            OVERALL_EMOJI="🎉"
+            OVERALL_TEXT="Successfully built and pushed"
+          else
+            OVERALL_EMOJI="💔"
+            OVERALL_TEXT="Build or push failed"
+          fi
 
           cat >> $GITHUB_STEP_SUMMARY << EOF
           # 🐳 Docker Build Results
 
-          ## $STATUS_EMOJI $STATUS_TEXT
+          ## $OVERALL_EMOJI $OVERALL_TEXT
 
-          ### 📦 Image Information
+          ---
+
+          ## 📊 Job Summary
+
+          | Job | Status | Description |
+          |-----|--------|-------------|
+          | 🏗️ Build | $BUILD_EMOJI \`$BUILD_STATUS\` | Multi-platform image build |
+          | 📦 Merge & Push | $MERGE_EMOJI \`$MERGE_STATUS\` | Create and push manifest |
+
+          ---
+
+          ## 📦 Image Information
 
           | Property | Value |
           |----------|-------|
           | 📍 Registry | \`${{ env.REGISTRY }}\` |
           | 🏷️ Image | \`${{ env.IMAGE_NAME }}\` |
-          | 🔖 Digest | \`${{ steps.push.outputs.digest || 'N/A' }}\` |
-          | 🏗️ Platforms | \`linux/amd64, linux/arm64\` |
+          | 🏗️ Platforms | \`linux/amd64\`, \`linux/arm64\` |
 
           ---
 
-          ### 🏷️ Tags
-
-          $TAGS_LIST
-
-          ---
-
-          ### 📋 Workflow Details
+          ## 📋 Workflow Details
 
           | Property | Value |
           |----------|-------|
-          | 🔀 Branch | \`${{ github.ref_name }}\` |
+          | 🔀 Ref | \`${{ github.ref_name }}\` |
           | 📝 Commit | [\`${GITHUB_SHA:0:7}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) |
           | 👤 Actor | @${{ github.actor }} |
           | 🏃 Run ID | [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |
@@ -133,17 +211,29 @@ jobs:
 
           ---
 
-          ### 🚀 Usage
+          ## 🚀 Usage
 
           \`\`\`bash
           # Pull the latest image
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
           # Run the container
-          docker run -p 3001:3001 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker run -d \\
+            --name drift \\
+            -p 3001:3001 \\
+            -e DATABASE_URL="postgresql://user:pass@host:5432/drift" \\
+            -e NEXTAUTH_SECRET="your-secret" \\
+            -e DRIFT_URL="http://localhost:3001" \\
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           \`\`\`
 
           ---
 
           <sub>🤖 Generated by GitHub Actions • Drift CI/CD Pipeline</sub>
           EOF
+
+      - name: Check for failures
+        if: needs.build.result == 'failure' || needs.merge.result == 'failure'
+        run: |
+          echo "❌ Docker build or push failed!"
+          exit 1

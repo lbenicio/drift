@@ -132,9 +132,9 @@ jobs:
           FAIL_COUNT=0
           for status in "$TEST_STATUS" "$BUILD_STATUS" "$TYPECHECK_STATUS"; do
             if [[ "$status" == "success" ]]; then
-              ((SUCCESS_COUNT++))
+              SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
             elif [[ "$status" == "failure" ]]; then
-              ((FAIL_COUNT++))
+              FAIL_COUNT=$((FAIL_COUNT + 1))
             fi
           done
 

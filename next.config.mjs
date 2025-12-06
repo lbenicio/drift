@@ -5,6 +5,7 @@ process.env.DRIFT_URL = process.env.NEXTAUTH_URL;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   reactStrictMode: true,
   rewrites() {
     return [
