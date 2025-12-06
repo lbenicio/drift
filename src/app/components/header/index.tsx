@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@lib/cn";
 
 import { useSessionSWR } from "@lib/use-session-swr";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useSyncExternalStore } from "react";
 import { useSelectedLayoutSegments } from "next/navigation";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -12,17 +12,21 @@ import { Moon, Sun } from "react-feather";
 import FadeIn from "@components/fade-in";
 import MobileHeader from "./mobile";
 
+const emptySubscribe = () => () => { };
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+function useIsMounted() {
+  return useSyncExternalStore(emptySubscribe, getSnapshot, getServerSnapshot);
+}
+
 export default function Header() {
   const { isAdmin, isAuthenticated } = useSessionSWR();
   const { resolvedTheme, setTheme } = useTheme();
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useIsMounted();
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
     <header className="mt-4 flex h-16 items-center justify-start md:justify-between">

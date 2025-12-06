@@ -12,8 +12,7 @@ type TitleProps = {
 
 export const PostTitle = ({ post, loading }: TitleProps) => {
   const { title, author, visibility, createdAt, expiresAt } = post || {};
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore displayName should be present
+  // @ts-expect-error displayName should be present
   const displayName = author?.displayName;
   return (
     <span className={styles.title}>

@@ -20,6 +20,7 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
   const { session, isLoading } = useSessionSWR();
   const isAuthor = isLoading ? undefined : session?.user ? session?.user?.id === authorId : false;
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
   const onSubmit = useCallback(
     async (password: string) => {
       const res = await fetchWithUser(`/api/post/${postId}?password=${password}`, {
@@ -63,8 +64,10 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
     router.push("/");
   };
 
+  // Handle auth state to auto-authenticate author or show password modal
   useEffect(() => {
     if (isAuthor === true) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentionally triggering side effects based on auth state
       onSubmit("author");
       setToast({
         message: "You're the author of this post, so you automatically have access to it.",
@@ -73,9 +76,7 @@ const PasswordModalWrapper = ({ setPost, postId, authorId }: Props) => {
     } else if (isAuthor === false) {
       setIsPasswordModalOpen(true);
     }
-  }, [isAuthor, onSubmit, setToast]);
-
-  return <PasswordModal creating={false} onClose={onClose} onSubmit={onSubmit} isOpen={isPasswordModalOpen} />;
+  }, [isAuthor, onSubmit, setToast]);  return <PasswordModal creating={false} onClose={onClose} onSubmit={onSubmit} isOpen={isPasswordModalOpen} />;
 };
 
 export default PasswordModalWrapper;

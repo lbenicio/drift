@@ -17,8 +17,10 @@ function Profile() {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { setToast } = useToasts();
 
+  // Sync name from userData when it becomes available
   useEffect(() => {
     if (!name && userData?.displayName) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- initializing form state from async data
       setName(userData?.displayName);
     }
   }, [name, userData?.displayName]);

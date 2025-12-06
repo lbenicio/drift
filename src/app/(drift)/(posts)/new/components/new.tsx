@@ -61,6 +61,7 @@ function Post({ initialPost, newPostParent }: { initialPost?: PostWithFiles; new
   const [docs, setDocs] = useState(defaultDocs);
 
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+	const [isSubmitting, setSubmitting] = useState(false);
 
   const sendRequest = useCallback(
     async (
@@ -105,8 +106,6 @@ function Post({ initialPost, newPostParent }: { initialPost?: PostWithFiles; new
     },
     [description, docs, router, setToast, title],
   );
-
-  const [isSubmitting, setSubmitting] = useState(false);
 
   const onSubmit = useCallback(
     async (visibility: string, password?: string) => {

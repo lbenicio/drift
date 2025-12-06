@@ -14,8 +14,7 @@ export const PostButtons = ({ post, loading }: { post?: PostWithFiles; loading?:
     if (!files?.length) return;
     const downloadZip = (await import("client-zip")).downloadZip;
     const blob = await downloadZip(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      files.map((file: any) => {
+		files.map((file) => {
         return {
           name: file.title,
           input: file.content,

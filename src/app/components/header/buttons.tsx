@@ -8,8 +8,16 @@ import { Button } from "@components/button";
 import Link from "@components/link";
 import { useSessionSWR } from "@lib/use-session-swr";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { cn } from "@lib/cn";
+
+const emptySubscribe = () => () => { };
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+function useIsMounted() {
+  return useSyncExternalStore(emptySubscribe, getSnapshot, getServerSnapshot);
+}
 
 // constant width for sign in / sign out buttons to avoid CLS
 const SIGN_IN_WIDTH = 110;
@@ -61,11 +69,7 @@ function NavButton({ className, ...tab }: Tab & { className?: string }) {
 
 function ThemeButton() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsMounted();
 
   return (
     <>

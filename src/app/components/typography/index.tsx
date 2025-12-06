@@ -20,7 +20,7 @@ export function TypographyH4({ children, className }: PropsWithChildren<ClassPro
 }
 
 export function TypographyP({ children, className }: PropsWithChildren<ClassProp>) {
-  return <p className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}>{children}</p>;
+  return <p className={cn("leading-7 not-first:mt-6", className)}>{children}</p>;
 }
 
 export function TypographyBlockquote({ children, className }: PropsWithChildren<ClassProp>) {
@@ -48,7 +48,7 @@ export function TableBody({ children, className }: PropsWithChildren<ClassProp>)
 }
 
 export function TableHeader({ children, className }: PropsWithChildren<ClassProp>) {
-  return <th className={cn("border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right", className)}>{children}</th>;
+  return <th className={cn("border px-4 py-2 text-left font-bold [[align=center]]:text-center [[align=right]]:text-right", className)}>{children}</th>;
 }
 
 export function TableRow({ children, className }: PropsWithChildren<ClassProp>) {
@@ -56,7 +56,7 @@ export function TableRow({ children, className }: PropsWithChildren<ClassProp>) 
 }
 
 export function TableCell({ children, className }: PropsWithChildren<ClassProp>) {
-  return <td className={cn("border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right", className)}>{children}</td>;
+  return <td className={cn("border px-4 py-2 text-left [[align=center]]:text-center [[align=right]]:text-right", className)}>{children}</td>;
 }
 
 export function TypographyList({ children, className }: PropsWithChildren<ClassProp>) {
