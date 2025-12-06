@@ -40,9 +40,8 @@
       "@styles/*": ["./src/app/styles/*"],
       "@hooks/*": ["./src/app/hooks/*"],
       "@utils/*": ["./src/app/utils/*"],
-      "@pages/*": ["./src/pages/*"],
       "@app/*": ["./src/app/*"],
-      "@test/*": ["./src/test/*"]
+      "@test/*": ["./tests/*"]
     }
   },
   "include": ["next-env.d.ts", "src/types/**/*.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],

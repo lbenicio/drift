@@ -9,9 +9,9 @@
     "build:analyze": "cross-env ANALYZE=true next build",
     "fmt:lint": "prettier --list-different --config .prettierrc src --write && eslint src",
     "unused:find": "next-unused",
-    "db:generate": "prisma generate --schema=src/prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=prisma/schema.prisma",
     "test:unit": "jest",
-    "deps:install": "yarn install && yarn prisma generate --schema=src/prisma/schema.prisma",
+    "deps:install": "yarn install && yarn prisma generate --schema=prisma/schema.prisma",
     "deps:update": "npm-check-updates -u && yarn install"
   },
   "dependencies": {
@@ -113,7 +113,7 @@
     ]
   },
   "prisma": {
-    "schema": "src/prisma/schema.prisma"
+    "schema": "prisma/schema.prisma"
   },
   "overrides": {
     "react": "19.2.1",

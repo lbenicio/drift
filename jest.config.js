@@ -2,12 +2,12 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  setupFiles: ["<rootDir>/src/test/setup-tests.ts"],
-  // TODO: update to app dir
+  setupFiles: ["<rootDir>/tests/setup-tests.ts"],
+  roots: ["<rootDir>/tests"],
   moduleNameMapper: {
     "@lib/(.*)": "<rootDir>/src/lib/$1",
     "@components/(.*)": "<rootDir>/src/app/components/$1",
-    "@test/(.*)": "<rootDir>/src/test/$1",
+    "@test/(.*)": "<rootDir>/tests/$1",
     "\\.(css)$": "identity-obj-proxy",
   },
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
