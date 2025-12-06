@@ -41,6 +41,7 @@
       "@hooks/*": ["./src/app/hooks/*"],
       "@utils/*": ["./src/app/utils/*"],
       "@app/*": ["./src/app/*"],
+      "@api/*": ["./src/api/*"],
       "@test/*": ["./tests/*"]
     }
   },

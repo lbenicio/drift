@@ -1,11 +1,11 @@
-import { Card, CardContent } from "@components/card";
-import { getWelcomeContent } from "@pages/api/welcome";
-import { getAllPosts, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma";
-import PostList, { NoPostsFound } from "@components/post-list";
-import { cache, Suspense } from "react";
-import ErrorBoundary from "@components/error/fallback";
+import { getWelcomeContent } from "@api/welcome";
 import DocumentTabs from "@app/(drift)/(posts)/components/document-tabs";
+import { Card, CardContent } from "@components/card";
+import ErrorBoundary from "@components/error/fallback";
 import { PageWrapper } from "@components/page-wrapper";
+import PostList, { NoPostsFound } from "@components/post-list";
+import { getAllPosts, serverPostToClientPost, ServerPostWithFilesAndAuthor } from "@lib/server/prisma";
+import { cache, Suspense } from "react";
 export const revalidate = 300;
 
 const getWelcomeData = cache(async () => {
