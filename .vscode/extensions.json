@@ -1,0 +1,33 @@
+{
+  "recommendations": [
+    // Essential
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // TypeScript/JavaScript
+    "YoavBls.pretty-ts-errors",
+
+    // Prisma
+    "Prisma.prisma",
+
+    // Tailwind CSS
+    "bradlc.vscode-tailwindcss",
+
+    // Git
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+
+    // Productivity
+    "usernamehw.errorlens",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "Gruntfuggly.todo-tree",
+    "aaron-bond.better-comments",
+
+    // Editor enhancements
+    "formulahendry.auto-rename-tag",
+    "EditorConfig.EditorConfig",
+    "PKief.material-icon-theme"
+  ],
+  "unwantedRecommendations": []
+}
